@@ -42,4 +42,40 @@ class authentification{
             return false;
         }
     }
+    public function login($email,$password){
+        $this->email = $email;
+
+        $query = "select * from client where email = :email";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":email",$this->email);
+
+        if($stmt->execute()){
+            $user = $stmt->fetch();
+
+            if(password_verify($password,$user['password'])){
+                $_SESSION['userId'] = $user['id'];
+                $_SESSION['role'] = 'user';
+                return true;
+            }
+            else{
+                return false;
+                echo "password incorect";
+            }
+        }
+        else{
+            echo "no user found";
+        }
+    }
+
+    public function logout(){
+        session_start();
+
+        session_unset();
+
+
+        header("Location: ./LoginAdmin.php");
+        exit();
+    }
 }
