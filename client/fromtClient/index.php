@@ -72,68 +72,24 @@ $obj = $cls->getVehicule();
     <div id="vehicles" class="max-w-6xl mx-auto px-4 py-8">
         <h2 class="text-2xl font-bold mb-6">Nos Véhicules</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Vehicle Card -->
-             <?php foreach($obj as $o): ?>
+            <?php foreach($obj as $o): ?>
             <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                <img src="<?php echo $o['image'];?>" alt="Voiture" class="w-full h-48 object-cover">
+                <img src="<?php echo $o['image']; ?>" alt="Voiture" class="w-full h-48 object-cover">
                 <div class="p-4">
-                    <h3 class="text-xl font-semibold mb-2"><?php echo $o['model'];  ?></h3>
+                    <h3 class="text-xl font-semibold mb-2"><?php echo $o['model']; ?></h3>
                     <div class="flex justify-between mb-2">
-                        <span class="text-gray-600"><?php echo $o['categorie'];  ?></span>
+                        <span class="text-gray-600"><?php echo $o['nom']; ?></span>
                         <span class="text-blue-600 font-bold"><?php echo $o['prix']; ?>/jour</span>
                     </div>
-                    <button class="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
-                            data-modal-target="car-modal" data-modal-toggle="car-modal">
+                    <a href="./DetailVehicule.php?id=<?php echo $o['id'] ?>" class="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
                         Voir détails
-                    </button>
+                    </a>
                 </div>
             </div>
             <?php endforeach; ?>
-            <!-- Repeat for more vehicles -->
         </div>
     </div>
 
     <!-- Car Details Modal -->
-    <div id="car-modal" tabindex="-1" aria-hidden="true" 
-         class="fixed top-0 left-0 right-0 z-50 hidden w-full overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
-        <div class="relative w-full max-w-2xl max-h-full p-4">
-            <div class="relative bg-white rounded-lg shadow">
-                <div class="flex items-start justify-between p-4 border-b">
-                    <h3 class="text-xl font-semibold">Toyota RAV4</h3>
-                    <button type="button" class="text-gray-400 hover:text-gray-900" 
-                            data-modal-hide="car-modal">
-                        <span class="sr-only">Fermer</span>
-                        ×
-                    </button>
-                </div>
-                <div class="p-6">
-                    <img src="/api/placeholder/600/300" alt="Voiture" class="w-full h-64 object-cover mb-4">
-                    <div class="grid grid-cols-2 gap-4 mb-4">
-                        <div>
-                            <h4 class="font-semibold mb-2">Caractéristiques</h4>
-                            <ul class="space-y-2">
-                                <li>Catégorie: SUV</li>
-                                <li>Prix: 100€/jour</li>
-                                <li>Transmission: Automatique</li>
-                                <li>Nombre de portes: 5</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h4 class="font-semibold mb-2">Avis</h4>
-                            <div class="space-y-2">
-                                <div class="p-2 bg-gray-50 rounded">
-                                    <p class="text-sm">Très satisfait de cette voiture</p>
-                                    <p class="text-xs text-gray-500">★★★★★</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <button class="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
-                        Réserver maintenant
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
 </body>
 </html>
