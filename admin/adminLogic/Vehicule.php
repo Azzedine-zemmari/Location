@@ -12,7 +12,7 @@ class Vehicule{
     }
 
     public function getVehicule(){
-        $query = "select * from vehicule ";
+        $query = "select * from ListeVehicules";
 
         $stmt = $this->conn->prepare($query);
 
@@ -25,11 +25,7 @@ class Vehicule{
         
     }
     public function detail($id){
-        $query = "select vehicule.*,category.nom AS category_name  
-        from vehicule 
-        join category on
-        category.id = vehicule.categorieId
-        where vehicule.id = :id";
+        $query = "select * from Vehicule_Category_View where id = :id";
 
         $stmt = $this->conn->prepare($query);
 

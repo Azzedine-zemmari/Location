@@ -78,7 +78,7 @@ $obj = $cls->getVehicule();
                 <div class="p-4">
                     <h3 class="text-xl font-semibold mb-2"><?php echo $o['model']; ?></h3>
                     <div class="flex justify-between mb-2">
-                        <span class="text-gray-600"><?php echo $o['nom']; ?></span>
+                        <span class="text-gray-600"><?php echo $o['category_name']; ?></span>
                         <span class="text-blue-600 font-bold"><?php echo $o['prix']; ?>/jour</span>
                     </div>
                     <a href="./DetailVehicule.php?id=<?php echo $o['id'] ?>" class="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
