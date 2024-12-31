@@ -56,6 +56,18 @@ class Vehicule{
     }
     public function filtrage($category){
         $query = "select * from ListeVehicules where category_name LIKE :category";
+        
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":category",$category);
+
+        if($stmt->execute()){
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+        else{
+            return $stmt->errorInfo();
+        }
+
 
     }
 }

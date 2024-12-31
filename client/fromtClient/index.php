@@ -7,13 +7,30 @@ $obj = $cls->getVehicule();
 
 $class = new connection();
 $connection = $class->conn();
-//to get all the category
 
 if(isset($_POST['submit'])){
     $model = $_POST['vehicule'];
     $obj = $cls->search($model);
     
 }
+//to get all the category
+$query = "select * from category";
+$stmt = $connection->prepare($query);
+
+if($stmt->execute()){
+    $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+else{
+    $stmt->errorInfo();
+}
+
+// if(isset($_POST['action']) && $_POST['action'] == 'filter'){
+//     $catogry = $_POST['category'];
+//     $obj = $cls->filtrage($catogry);
+//     echo json_encode($obj);
+//     exit();
+// }
+
 
 ?>
 
@@ -63,9 +80,15 @@ if(isset($_POST['submit'])){
     <div class="max-w-6xl mx-auto px-4 py-8">
         <div class="bg-white rounded-lg shadow p-6">
             <form action="" method="POST">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <input type="text" name="vehicule" placeholder="Rechercher un model..." 
-                           class="w-full px-4 py-2 border rounded-md">
+                        class="w-full px-4 py-2 border rounded-md">
+                        <select name="category" class="w-full px-4 py-2 border rounded-md">
+                            <option value="" disabled selected>filtrer avec categorie</option>
+                        <?php foreach($categories as $categorie): ?>
+                            <option value="<?php echo $categorie['nom']?>"><?php echo $categorie['nom']?></option>
+                        <?php endforeach; ?>
+                </select>
                     <button name="submit" class="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
                         Rechercher
                     </button>
@@ -101,6 +124,48 @@ if(isset($_POST['submit'])){
         </div>
     </div>
 
-    <!-- Car Details Modal -->
+<!-- <script>
+    document.querySelector('select[name="category"]').addEventListener("change",function(){
+        const category = this.value;
+
+        fetch('../../admin/adminLogic/Vehicule.php',{
+            method:'POST',
+            headers:{'Content-Type':'application/x-www-form-urlencoded'},
+            body:`action=filter&category=${encodeURIComponent(category)}`
+        })
+        .then(response=>response.json())
+        .then(data=>{
+            const vehiclesContainer = document.getElementById('vehicles');
+            const vehiclesGrid = vehiclesContainer.querySelector('.grid');
+
+            vehiclesGrid.innerHTML = ''
+
+            if(data.length > 0){
+                data.foreach(vehicule=>{
+                    const vehiculeHTML =  `
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                            <img src="${vehicle.image}" alt="Voiture" class="w-full h-48 object-cover">
+                            <div class="p-4">
+                                <h3 class="text-xl font-semibold mb-2">${vehicle.model}</h3>
+                                <div class="flex justify-between mb-2">
+                                    <span class="text-gray-600">${vehicle.category_name}</span>
+                                    <span class="text-blue-600 font-bold">${vehicle.prix}/jour</span>
+                                </div>
+                                <a href="./DetailVehicule.php?id=${vehicle.id}" 
+                                   class="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+                                    Voir détails
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                    vehiclesGrid.innerHTML+=vehiculeHTML;
+                });
+            }else{
+                vehiclesGrid.innerHTML = `<p class="text-gray-600">Aucun véhicule trouvé.</p>`;
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    })
+</script> -->
 </body>
 </html>
