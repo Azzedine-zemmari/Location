@@ -38,14 +38,14 @@ class Vehicule{
             echo "error";
         }
     }
-    public function search($name){
-        $query = "select * from ListeVehicules where category_name LIKE :name";
+    public function search($model){
+        $query = "select * from ListeVehicules where model LIKE :model";
 
         $stmt = $this->conn->prepare($query);
         
-        $name = '%' . $name . '%';
+        $model = '%' . $model . '%';
 
-        $stmt->bindParam(":name",$name);
+        $stmt->bindParam(":model",$model);
 
         if($stmt->execute()){
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -53,5 +53,9 @@ class Vehicule{
         else{
             return $stmt->errorInfo();
         }
+    }
+    public function filtrage($category){
+        $query = "select * from ListeVehicules where category_name LIKE :category";
+
     }
 }

@@ -10,8 +10,8 @@ $connection = $class->conn();
 //to get all the category
 
 if(isset($_POST['submit'])){
-    $name = $_POST['vehicule'];
-    $obj = $cls->search($name);
+    $model = $_POST['vehicule'];
+    $obj = $cls->search($model);
     
 }
 
@@ -64,7 +64,7 @@ if(isset($_POST['submit'])){
         <div class="bg-white rounded-lg shadow p-6">
             <form action="" method="POST">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <input type="text" name="vehicule" placeholder="Rechercher un véhicule..." 
+                    <input type="text" name="vehicule" placeholder="Rechercher un model..." 
                            class="w-full px-4 py-2 border rounded-md">
                     <button name="submit" class="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
                         Rechercher
