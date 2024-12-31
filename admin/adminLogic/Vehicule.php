@@ -38,4 +38,20 @@ class Vehicule{
             echo "error";
         }
     }
+    public function search($name){
+        $query = "select * from ListeVehicules where category_name LIKE :name";
+
+        $stmt = $this->conn->prepare($query);
+        
+        $name = '%' . $name . '%';
+
+        $stmt->bindParam(":name",$name);
+
+        if($stmt->execute()){
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+        else{
+            return $stmt->errorInfo();
+        }
+    }
 }

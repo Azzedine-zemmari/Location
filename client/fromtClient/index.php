@@ -5,6 +5,16 @@ require "../../admin/adminLogic/Vehicule.php";
 $cls = new Vehicule();
 $obj = $cls->getVehicule();
 
+$class = new connection();
+$connection = $class->conn();
+//to get all the category
+
+if(isset($_POST['submit'])){
+    $name = $_POST['vehicule'];
+    $obj = $cls->search($name);
+    
+}
+
 ?>
 
 
@@ -52,19 +62,15 @@ $obj = $cls->getVehicule();
     <!-- Search and Filter Section -->
     <div class="max-w-6xl mx-auto px-4 py-8">
         <div class="bg-white rounded-lg shadow p-6">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <input type="text" placeholder="Rechercher un véhicule..." 
-                       class="w-full px-4 py-2 border rounded-md">
-                <select class="w-full px-4 py-2 border rounded-md">
-                    <option value="">Catégorie</option>
-                    <option value="suv">SUV</option>
-                    <option value="berline">Berline</option>
-                    <option value="citadine">Citadine</option>
-                </select>
-                <button class="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
-                    Rechercher
-                </button>
-            </div>
+            <form action="" method="POST">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input type="text" name="vehicule" placeholder="Rechercher un véhicule..." 
+                           class="w-full px-4 py-2 border rounded-md">
+                    <button name="submit" class="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+                        Rechercher
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -72,7 +78,8 @@ $obj = $cls->getVehicule();
     <div id="vehicles" class="max-w-6xl mx-auto px-4 py-8">
         <h2 class="text-2xl font-bold mb-6">Nos Véhicules</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <?php foreach($obj as $o): ?>
+        <?php if (!empty($obj)): ?>    
+        <?php foreach($obj as $o): ?>
             <div class="bg-white rounded-lg shadow-md overflow-hidden">
                 <img src="<?php echo $o['image']; ?>" alt="Voiture" class="w-full h-48 object-cover">
                 <div class="p-4">
@@ -87,6 +94,10 @@ $obj = $cls->getVehicule();
                 </div>
             </div>
             <?php endforeach; ?>
+            <?php else: ?>
+            <p class="text-gray-600">Aucun véhicule trouvé.</p>
+            <?php endif; ?>
+
         </div>
     </div>
 
