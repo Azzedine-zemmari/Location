@@ -36,5 +36,13 @@ class avis{
             return false;
         }
     }
+    public function deleteReview($reviewId){
+        $query = "update avis set deleted_at = CURRENT_TIMESTAMP() where id = :id";
+        
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":id",$reviewId);
+
+        return $stmt->execute();
+    }
 
 }

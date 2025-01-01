@@ -177,6 +177,7 @@ $allReviews = $cls3->showAll($id);
             <?php if (!empty($allReviews)): ?>
                 <div class="grid gap-6">
                     <?php foreach ($allReviews as $review): ?>
+                        <?php if($review['deleted_at'] == null):?>
                         <div class="border-b border-gray-200 pb-6 last:border-b-0">
                             <div class="flex items-center justify-between mb-4">
                                 <div class="flex items-center">
@@ -221,8 +222,14 @@ $allReviews = $cls3->showAll($id);
                             <!-- Review Comment -->
                             <div class="prose prose-sm text-gray-600">
                                 <p><?php echo $review['comment']; ?></p>
+                                <div class="flex justify-end">
+                                    <?php if($review['userId'] == $userId):?>
+                                        <a href="../ClientLogic/deleteAvis.php?id=<?php echo $review['id'] ?>"><img src="./image/delete.svg" class="w-4 h-4" alt=""></a>
+                                    <?php endif; ?>
+                                </div>
                             </div>
                         </div>
+                        <?php endif; ?>
                     <?php endforeach; ?>
                 </div>
             <?php else: ?>
