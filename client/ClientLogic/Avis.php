@@ -45,4 +45,19 @@ class avis{
         return $stmt->execute();
     }
 
+    public function updateReview($idAvis,$avis,$comment){
+        $sql = "update avis set avis = :avis , comment = :comment , updated_at = CURRENT_TIMESTAMP() where id = :idAvis";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(":avis",$avis);
+        $stmt->bindParam(":comment",$comment);
+        $stmt->bindParam(":idAvis",$idAvis);
+
+        if($stmt->execute()){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 }

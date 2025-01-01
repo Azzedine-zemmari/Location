@@ -50,9 +50,6 @@ if($stmt->execute()){
                 </p>
             </div>
             <form class="mt-8 space-y-6" action="#" method="POST">
-                <input type="hidden" name="userId" value="123">
-                <input type="hidden" name="vehiculeId" value="456">
-                
                 <div class="rounded-md shadow-sm space-y-4">
                     <div>
                         <label for="date_debut" class="block text-sm font-medium text-gray-700">

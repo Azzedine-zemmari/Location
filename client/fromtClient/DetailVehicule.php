@@ -222,9 +222,10 @@ $allReviews = $cls3->showAll($id);
                             <!-- Review Comment -->
                             <div class="prose prose-sm text-gray-600">
                                 <p><?php echo $review['comment']; ?></p>
-                                <div class="flex justify-end">
+                                <div class="flex justify-end gap-3">
                                     <?php if($review['userId'] == $userId):?>
                                         <a href="../ClientLogic/deleteAvis.php?id=<?php echo $review['id'] ?>"><img src="./image/delete.svg" class="w-4 h-4" alt=""></a>
+                                        <a href="./updateAvis.php?id=<?php echo $review['id'] ?>"><img src="./image/update.svg" class="w-4 h-4" alt=""></a>
                                     <?php endif; ?>
                                 </div>
                             </div>
