@@ -1,5 +1,5 @@
 <?php
-require "../../Config.php";
+require_once "../../Config.php";
 class reservation {
     private $conn;
     public function __construct()
@@ -26,5 +26,21 @@ class reservation {
             echo $stmt->errorInfo();
         }
 
+    }
+    public function hasReservation($userId){
+        $query = "select * from reservation where userId = :userId";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":userId",$userId);
+        
+        if ($stmt->execute()) {
+            $result = $stmt->fetch(); // Fetch only the first row
+            if($result){
+                return true;
+            }
+            else {
+                return false;
+            }
+        } 
     }
 }
