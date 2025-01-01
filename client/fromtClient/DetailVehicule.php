@@ -10,17 +10,18 @@ $obj2 = $cls->detail($id);
 $cls2 = new reservation();
 $userId = $_SESSION['userId'];
 $hasReserv = $cls2->hasReservation($userId);
+$cls3 = new avis();
 if($hasReserv){
 if(isset($_POST['submit'])){
     $rating = $_POST['rating'];
     $comment = $_POST['comment'];
-    $cls3 = new avis();
     $review = $cls3->ajouterAvis($userId,$id,$rating,$comment);
     if($review){
         $_SESSION['message'] = "avis ajouter avec success";
     }
 }
 }
+$allReviews = $cls3->showAll($id);
 ?>
 
 <!DOCTYPE html>
@@ -168,6 +169,72 @@ if(isset($_POST['submit'])){
                 <h2 class="text-xl font-semibold text-red-500">Aucune information disponible pour ce véhicule.</h2>
             </div>
         <?php endif; ?>
+          <!-- Reviews Section -->
+    <div class="container mx-auto px-4 py-8">
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">Avis des clients</h2>
+            
+            <?php if (!empty($allReviews)): ?>
+                <div class="grid gap-6">
+                    <?php foreach ($allReviews as $review): ?>
+                        <div class="border-b border-gray-200 pb-6 last:border-b-0">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center">
+                                    <!-- User Avatar -->
+                                    <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+                                        <span class="text-blue-600 font-semibold">
+                                            <?php echo substr($review['nom'], 0, 1); ?>
+                                        </span>
+                                    </div>
+                                    <!-- User Name and Date -->
+                                    <div class="ml-4">
+                                        <h4 class="font-semibold text-gray-800"><?php echo $review['nom']; ?></h4>
+                                    </div>
+                                </div>
+                                <!-- Rating -->
+                                <div class="flex items-center">
+                                    <div class="flex items-center text-yellow-400">
+                                        <?php
+                                        $rating = $review['avis'];
+                                        $ratingText = '';
+                                        switch($rating) {
+                                            case 'satisfer':
+                                                $ratingText = '★★★★★';
+                                                break;
+                                            case 'bien':
+                                                $ratingText = '★★★★☆';
+                                                break;
+                                            case 'pas mal':
+                                                $ratingText = '★★★☆☆';
+                                                break;
+                                            case 'null':
+                                                $ratingText = '★★☆☆☆';
+                                                break;
+                                            default:
+                                                $ratingText = '☆☆☆☆☆';
+                                        }
+                                        echo $ratingText;
+                                        ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Review Comment -->
+                            <div class="prose prose-sm text-gray-600">
+                                <p><?php echo $review['comment']; ?></p>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php else: ?>
+                <div class="text-center py-8">
+                    <div class="text-gray-400 mb-4">
+                        <svg class="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                  d="M8 12h.01M12 12h.01M16 12h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                            </path>
+                        </svg>
+                    </div>
+            <?php endif; ?>
     </div>
         <!-- Modal Control Script -->
         <script>

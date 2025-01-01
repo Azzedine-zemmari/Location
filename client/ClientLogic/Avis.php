@@ -21,5 +21,20 @@ class avis{
 
         return $stmt->execute();
     }
+    public function showAll($id){
+        $query = "select * from getReviews where vehiculeId = :id";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":id",$id);
+
+        if($stmt->execute()){
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        }
+        else{
+            return false;
+        }
+    }
 
 }
