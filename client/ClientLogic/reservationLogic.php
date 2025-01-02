@@ -28,7 +28,7 @@ class reservation {
 
     }
     public function hasReservation($userId){
-        $query = "select * from reservation where userId = :userId";
+        $query = "select * from reservation where userId = :userId"; // logic error
 
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(":userId",$userId);
