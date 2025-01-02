@@ -23,4 +23,18 @@ class category{
         }
         
     }
+    public function insertInto($nom){
+        $query = "insert into category(nom) values(:nom)";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":nom",$nom);
+
+        if($stmt->execute()){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 }
