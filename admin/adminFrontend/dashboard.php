@@ -3,144 +3,242 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>Admin Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100">
-    <!-- Navbar -->
-  <nav class="bg-black shadow-md p-4 flex justify-between items-center">
-    <div class="flex items-center"><a href="#">
-                <!-- <img src=".../img/cuisine_logo-removebg-preview.png" class="max-w-full h-auto w-[100px] " alt="logo"> -->
-            </a>
-    <h1 class="text-2xl font-bold text-white">Dashboard panel</h1></div>
-    <div class="flex items-center">
-      <span class="mr-4 text-white">Hello, <strong>User</strong></span>
-      <img src="../../client/fromtClient/image/User.png" alt="profile" class="rounded-full w-4 h-4">
-    </div>
-  </nav>
-  
-
-    
-<div class="flex h-screen">
-  <!-- Sidebar -->
-  <aside class="w-64 bg-gray-800">
-      
-      <nav class="mt-8">
-          <a href="#" class="block py-2 px-4 text-gray-400 hover:bg-gray-700 hover:text-white">Dashboard</a>
-          <a href="view_menus.php" class="block py-2 px-4 text-gray-400 hover:bg-gray-700 hover:text-white"> View Menus</a>
-          <a href="make_reservation.php" class="block py-2 px-4 text-gray-400 hover:bg-gray-700 hover:text-white"> Make a reservation</a>
-          <a href="view_reservations.php" class="block py-2 px-4 text-gray-400 hover:bg-gray-700 hover:text-white">View reservations</a>
-          <a href="logout.php" class="block py-2 px-4 text-gray-400 hover:bg-gray-700 hover:text-white">Logout</a>
-      </nav>
-  </aside>
-  <main class="flex-1  overflow-y-auto">
-    <div class="container mx-auto p-4">
-        <!-- Welcome Section -->
-    <div class="bg-white p-6 rounded-lg shadow-md mb-6 flex justify-between items-center">
-      <div>
-        <h2 class="text-3xl font-semibold text-gray-800">Welcome, Client!</h2>
-        <p class="text-gray-600 mt-2">Check your profil, and stay connecte!</p>
-      </div>
-      <div>
-        <img src="https://via.placeholder.com/120" alt="chef icon" class="w-32">
-      </div>
-    </div>
-     
-        <!-- Reservations Section -->
-        <section class="mb-8">
-            <h2 class="text-xl font-bold mb-4"> Reservations History</h2>
-            <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                <table class="min-w-full bg-white">
-                    <thead >
-                        <tr>
-                            <th class="py-2 px-4 text-left">Client</th>
-                            <th class="py-2 px-4 text-left">Date</th>
-                            <th class="py-2 px-4 text-left">Time</th>
-                            <th class="py-2 px-4 text-left">Guests</th>
-                            <th class="py-2 px-4 text-left">Status</th>
-                            <th class="py-2 px-4 text-left">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        
-                        <tr class="border-t">
-                            <td class="py-2 px-4">Asma lachhab</td>
-                            <td class="py-2 px-4">2024-12-17</td>
-                            <td class="py-2 px-4">19:00</td>
-                            <td class="py-2 px-4">4</td>
-                            <td class="py-2 px-4 text-yellow-500">Pending</td>
-                            <td class="border-b p-3">
-              <button class="text-green-500 hover:underline">Accept</button> | 
-              <button class="text-red-500 hover:underline">Refuse</button>
-            </td>
-                        </tr>
-                        
-                        <tr class="border-t">
-                            <td class="py-2 px-4">Sara boulahia</td>
-                            <td class="py-2 px-4">2024-12-18td>
-                            <td class="py-2 px-4">15:00</td>
-                            <td class="py-2 px-4">6</td>
-                            <td class="py-2 px-4 text-yellow-500">Pending</td>
-                            <td class="border-b p-3">
-              <button class="text-green-500 hover:underline">Accept</button> | 
-              <button class="text-red-500 hover:underline">Refuse</button>
-            </td>
-                        </tr>
-                        <tr class="border-t">
-                            <td class="py-2 px-4">Sara boulahia</td>
-                            <td class="py-2 px-4">2024-12-18td>
-                            <td class="py-2 px-4">15:00</td>
-                            <td class="py-2 px-4">6</td>
-                            <td class="py-2 px-4 text-yellow-500">Pending</td>
-                            <td class="border-b p-3">
-              <button class="text-green-500 hover:underline">Accept</button> | 
-              <button class="text-red-500 hover:underline">Refuse</button>
-            </td>
-                        </tr>
-
-                        <tr class="border-t">
-                            <td class="py-2 px-4">Sara boulahia</td>
-                            <td class="py-2 px-4">2024-12-18td>
-                            <td class="py-2 px-4">15:00</td>
-                            <td class="py-2 px-4">6</td>
-                            <td class="py-2 px-4 text-yellow-500">Pending</td>
-                            <td class="border-b p-3">
-              <button class="text-green-500 hover:underline">Accept</button> | 
-              <button class="text-red-500 hover:underline">Refuse</button>
-            </td>
-                        </tr>
-
-                        <tr class="border-t">
-                            <td class="py-2 px-4">Sara boulahia</td>
-                            <td class="py-2 px-4">2024-12-18td>
-                            <td class="py-2 px-4">15:00</td>
-                            <td class="py-2 px-4">6</td>
-                            <td class="py-2 px-4 text-yellow-500">Pending</td>
-                            <td class="border-b p-3">
-              <button class="text-green-500 hover:underline">Edit</button> | 
-              <button class="text-red-500 hover:underline">Cancel</button>
-            </td>
-                        </tr>                    </tbody>
-                </table>
+    <div class="min-h-screen flex">
+        <!-- Sidebar -->
+        <aside class="bg-indigo-800 text-white w-64 min-h-screen p-4 hidden md:block">
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold">Admin Panel</h2>
             </div>
-        </section>
+            <nav>
+                <ul class="space-y-2">
+                    <li>
+                        <a href="#" class="flex items-center space-x-2 p-2 hover:bg-indigo-700 rounded">
+                            <i class="fas fa-home"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./Vehicule.php" class="flex items-center space-x-2 p-2 hover:bg-indigo-700 rounded">
+                            <i class="fas fa-car"></i>
+                            <span>Vehicles</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center space-x-2 p-2 hover:bg-indigo-700 rounded">
+                            <i class="fas fa-users"></i>
+                            <span>Users</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center space-x-2 p-2 hover:bg-indigo-700 rounded">
+                            <i class="fas fa-calendar"></i>
+                            <span>Reservations</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center space-x-2 p-2 hover:bg-indigo-700 rounded">
+                            <i class="fas fa-cog"></i>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
 
-   
-    
+        <!-- Main Content -->
+        <div class="flex-1">
+            <!-- Top Navigation -->
+            <header class="bg-white shadow p-4">
+                <div class="flex items-center justify-between">
+                    <button class="md:hidden text-gray-600">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                    <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <i class="fas fa-bell text-gray-600"></i>
+                            <span class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-4 h-4 text-xs flex items-center justify-center">3</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <img src="/api/placeholder/32/32" alt="Profile" class="w-8 h-8 rounded-full">
+                            <span class="text-gray-700">Admin User</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
 
-        <!-- Add Menu Section -->
-        <section class="mb-8">
-        <a href="activites.php" class="bg-orange-950 text-white px-4 py-2 rounded-md">Ajouter reservation</a>
-        </section>
+            <!-- Dashboard Content -->
+            <main class="p-6">
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 class="text-gray-500 text-sm">Total Vehicles</h3>
+                                <p class="text-2xl font-bold">245</p>
+                            </div>
+                            <div class="bg-blue-100 p-3 rounded-full">
+                                <i class="fas fa-car text-blue-600"></i>
+                            </div>
+                        </div>
+                        <p class="text-green-500 text-sm mt-2">
+                            <i class="fas fa-arrow-up"></i> 12% increase
+                        </p>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 class="text-gray-500 text-sm">Active Rentals</h3>
+                                <p class="text-2xl font-bold">84</p>
+                            </div>
+                            <div class="bg-green-100 p-3 rounded-full">
+                                <i class="fas fa-key text-green-600"></i>
+                            </div>
+                        </div>
+                        <p class="text-green-500 text-sm mt-2">
+                            <i class="fas fa-arrow-up"></i> 8% increase
+                        </p>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 class="text-gray-500 text-sm">Total Users</h3>
+                                <p class="text-2xl font-bold">1,238</p>
+                            </div>
+                            <div class="bg-purple-100 p-3 rounded-full">
+                                <i class="fas fa-users text-purple-600"></i>
+                            </div>
+                        </div>
+                        <p class="text-green-500 text-sm mt-2">
+                            <i class="fas fa-arrow-up"></i> 15% increase
+                        </p>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 class="text-gray-500 text-sm">Revenue</h3>
+                                <p class="text-2xl font-bold">$84,325</p>
+                            </div>
+                            <div class="bg-yellow-100 p-3 rounded-full">
+                                <i class="fas fa-dollar-sign text-yellow-600"></i>
+                            </div>
+                        </div>
+                        <p class="text-green-500 text-sm mt-2">
+                            <i class="fas fa-arrow-up"></i> 10% increase
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Charts -->
+                <!-- <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <h3 class="text-lg font-semibold mb-4">Revenue Overview</h3>
+                        <canvas id="revenueChart" height="300"></canvas>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <h3 class="text-lg font-semibold mb-4">Vehicle Categories</h3>
+                        <canvas id="categoriesChart" height="300"></canvas>
+                    </div>
+                </div> -->
+
+                <!-- Recent Activity -->
+                <div class="mt-6 bg-white rounded-lg shadow">
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold mb-4">Recent Activity</h3>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full">
+                                <thead>
+                                    <tr class="border-b">
+                                        <th class="text-left p-3">User</th>
+                                        <th class="text-left p-3">Vehicle</th>
+                                        <th class="text-left p-3">Action</th>
+                                        <th class="text-left p-3">Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="border-b">
+                                        <td class="p-3">John Doe</td>
+                                        <td class="p-3">Toyota Camry</td>
+                                        <td class="p-3">Rental Started</td>
+                                        <td class="p-3">2024-01-02</td>
+                                    </tr>
+                                    <tr class="border-b">
+                                        <td class="p-3">Jane Smith</td>
+                                        <td class="p-3">Honda Civic</td>
+                                        <td class="p-3">Rental Ended</td>
+                                        <td class="p-3">2024-01-02</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3">Mike Johnson</td>
+                                        <td class="p-3">Ford Mustang</td>
+                                        <td class="p-3">Reserved</td>
+                                        <td class="p-3">2024-01-02</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
     </div>
 
-    
+    <script>
+        // // Revenue Chart
+        // const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+        // new Chart(revenueCtx, {
+        //     type: 'line',
+        //     data: {
+        //         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+        //         datasets: [{
+        //             label: 'Revenue',
+        //             data: [65000, 59000, 80000, 81000, 76000, 84000],
+        //             borderColor: 'rgb(79, 70, 229)',
+        //             tension: 0.1
+        //         }]
+        //     },
+        //     options: {
+        //         responsive: true,
+        //         maintainAspectRatio: false
+        //     }
+        // });
 
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white text-center p-4">
-        <p>&copy; 2024 Travigo set web de voyage. All rights reserved.</p>
-    </footer>
-    </main>
-    </body>
+        // // Categories Chart
+        // const categoriesCtx = document.getElementById('categoriesChart').getContext('2d');
+        // new Chart(categoriesCtx, {
+        //     type: 'doughnut',
+        //     data: {
+        //         labels: ['SUV', 'Sedan', 'Sports', 'Luxury'],
+        //         datasets: [{
+        //             data: [35, 25, 20, 20],
+        //             backgroundColor: [
+        //                 'rgb(79, 70, 229)',
+        //                 'rgb(59, 130, 246)',
+        //                 'rgb(16, 185, 129)',
+        //                 'rgb(245, 158, 11)'
+        //             ]
+        //         }]
+        //     },
+        //     options: {
+        //         responsive: true,
+        //         maintainAspectRatio: false
+        //     }
+        // });
+
+        // Mobile menu toggle
+        document.querySelector('.fa-bars').addEventListener('click', () => {
+            const sidebar = document.querySelector('aside');
+            sidebar.classList.toggle('hidden');
+        });
+    </script>
+</body>
 </html>

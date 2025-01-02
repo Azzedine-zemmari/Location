@@ -43,4 +43,18 @@ class reservation {
             }
         } 
     }
+    public function getAllReservation(){
+        $query = "select reservation.* , vehicule.mark,client.nom , lieu.lieuName from reservation
+         join client on reservation.userId = client.id 
+         join vehicule on vehicule.id = reservation.vehiculeId 
+         join lieu on lieu.id = reservation.lieuId"; 
+
+        $stmt = $this->conn->prepare($query);
+        
+        if ($stmt->execute()) {
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC); // Fetch only the first row
+            return $result;
+        } 
+    
+    }
 }

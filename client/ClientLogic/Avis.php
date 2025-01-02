@@ -21,6 +21,7 @@ class avis{
 
         return $stmt->execute();
     }
+    // show all review for one car 
     public function showAll($id){
         $query = "select * from getReviews where vehiculeId = :id";
 
@@ -58,6 +59,20 @@ class avis{
         }
         else{
             return false;
+        }
+    }
+    // show all review for all cars
+    public function getAll(){
+        $sql = "select avis.*,vehicule.model,client.nom as clientName,category.nom as categoryName from avis join client on avis.userId = client.id join vehicule on avis.vehiculeId = vehicule.id join category on vehicule.categorieId = category.id ;";
+
+        $stmt = $this->conn->prepare($sql);
+        
+        if($stmt->execute()){
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $result; 
+        }
+        else{
+            echo 'error';
         }
     }
 }
