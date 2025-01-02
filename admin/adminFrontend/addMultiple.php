@@ -8,6 +8,66 @@ $stmt = $connect->prepare($sql);
 if ($stmt->execute()) {
     $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+if(isset($_POST['submit'])){
+    $categorieId = $_POST['categorie'];
+
+    $vehicules = [];
+       // Get the counter value from the form
+       $totalVehicules = isset($_POST['counter']) ? $_POST['counter'] : 1;
+    
+       // Loop through all possible vehicles (from 1 to counter or just 1 if no counter)
+       for($vehiculeCounter = 1; $vehiculeCounter <= $totalVehicules; $vehiculeCounter++) {
+           // Check if at least the model exists for this counter
+           if(isset($_POST["model$vehiculeCounter"])) {
+               $vehicule = [
+                   'model' => $_POST["model$vehiculeCounter"],
+                   'mark' => $_POST["mark$vehiculeCounter"],
+                   'prix' => $_POST["prix$vehiculeCounter"],
+                   'disponibilite' => $_POST["disponibilite$vehiculeCounter"],
+                   'color' => $_POST["color$vehiculeCounter"] ?? null,
+                   'porte' => $_POST["porte$vehiculeCounter"],
+                   'transmition' => $_POST["transmition$vehiculeCounter"] ?? null,
+                   'personne' => $_POST["personne$vehiculeCounter"]
+               ];
+               
+               // Handle image upload
+               if(isset($_FILES["image$vehiculeCounter"]) && $_FILES["image$vehiculeCounter"]['error'] === UPLOAD_ERR_OK) {
+                   $target_dir = "/folder/";
+                   $fileName = basename($_FILES["image$vehiculeCounter"]['name']);
+                   $targetFilePath = $target_dir . $fileName; // Fixed concatenation
+                   
+                   if(move_uploaded_file($_FILES["image$vehiculeCounter"]['tmp_name'], $targetFilePath)){
+                       $vehicule['image'] = $targetFilePath;
+                   } else {
+                       echo "ERROR in uploading image for vehicle $vehiculeCounter";
+                       continue; // Skip this vehicle if image upload fails
+                   }
+               }
+               
+               $vehicules[] = $vehicule;
+           }
+       }
+       
+       // Insert all vehicles
+       foreach($vehicules as $vehicule){
+           $sql = "INSERT INTO vehicule (categorieId, model, mark, prix, disponibilite, color, porte, transmition, personne, image) 
+                   VALUES (:categorieId, :model, :mark, :prix, :disponibilite, :color, :porte, :transmition, :personne, :image)";
+           
+           $stmt = $connect->prepare($sql);
+           $stmt->execute([
+               ':categorieId' => $categorieId,  // Fixed variable name
+               ':model' => $vehicule['model'],  // Fixed array key name
+               ':mark' => $vehicule['mark'],
+               ':prix' => $vehicule['prix'],
+               ':disponibilite' => $vehicule['disponibilite'],
+               ':color' => $vehicule['color'],
+               ':porte' => $vehicule['porte'],
+               ':transmition' => $vehicule['transmition'],
+               ':personne' => $vehicule['personne'],
+               ':image' => $vehicule['image'] ?? null
+           ]);
+       }
+}
 ?>
 
 <!DOCTYPE html>
@@ -83,8 +143,8 @@ if ($stmt->execute()) {
                             name="disponibilite"
                             class="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:ring-indigo-500 focus:border-indigo-500"
                             required>
-                            <option value="1">Available</option>
-                            <option value="0">Unavailable</option>
+                            <option value="true">Available</option>
+                            <option value="false">Unavailable</option>
                         </select>
                     </div>
                     <div>
@@ -145,7 +205,7 @@ if ($stmt->execute()) {
                     Submit
                 </button>
                 <button
-                    type="submit"
+                    type="button"
                     id="moreVehicule"
                     class="bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700">
                     add more vehicule
@@ -156,13 +216,30 @@ if ($stmt->execute()) {
     <script>
         let devCounter = 1;
         const addForm = document.getElementById("moreVehicule");
-        const MultipleForms = document.getElementById("MultipleForms")
+        const MultipleForms = document.getElementById("MultipleForms");
+        const form = document.querySelector("form");
+        devCounter++;
+        const newDiv = document.createElement("div");
+        newDiv.classList.add("grid", "grid-cols-1", "md:grid-cols-2", "gap-4", "mt-6");
+    
+    // Add a hidden input to track total number of forms
+    const counterInput = document.createElement("input");
+    counterInput.type = "hidden";
+    counterInput.name = "counter";
+    counterInput.value = devCounter;
+    
+    // Replace or update existing counter input
+    const existingCounter = form.querySelector('input[name="counter"]');
+    if (existingCounter) {
+        existingCounter.value = devCounter;
+    } else {
+        form.appendChild(counterInput);
+    }
         addForm.addEventListener("click", () => {
             const newDiv = document.createElement("div");
             newDiv.classList.add("grid", "grid-cols-1", "md:grid-cols-2", "gap-4", "mt-6");
             newDiv.innerHTML = `
         <div>
-        <input type = "hidden" name='counter' value = '${devCounter}'/>
                         <label for="model" class="block text-sm font-medium text-gray-700">Model</label>
                         <input
                             type="text"
@@ -200,8 +277,8 @@ if ($stmt->execute()) {
                             name="disponibilite${devCounter}"
                             class="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:ring-indigo-500 focus:border-indigo-500"
                             required>
-                            <option value="1">Available</option>
-                            <option value="0">Unavailable</option>
+                            <option value="true">Available</option>
+                            <option value="false">Unavailable</option>
                         </select>
                     </div>
                     <div>
@@ -253,7 +330,6 @@ if ($stmt->execute()) {
                     </div>
         `
         MultipleForms.appendChild(newDiv);
-        devCounter++;
         })
     </script>
 </body>
