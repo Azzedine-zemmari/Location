@@ -104,7 +104,7 @@ else{
         <?php if (!empty($obj)): ?>    
         <?php foreach($obj as $o): ?>
             <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                <img src="<?php echo $o['image']; ?>" alt="Voiture" class="w-full h-48 object-cover">
+                <img src="../../folder/<?php echo $o['image']; ?>" alt="Voiture" class="w-full h-48 object-cover">
                 <div class="p-4">
                     <h3 class="text-xl font-semibold mb-2"><?php echo $o['model']; ?></h3>
                     <div class="flex justify-between mb-2">

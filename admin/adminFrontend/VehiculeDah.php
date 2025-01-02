@@ -109,7 +109,7 @@ $vehicules = $class->getVehicule();
                                     <?php foreach ($vehicules as $vehicule): ?>
                                         <tr class="border-b">
                                             <td class="p-3"><?= $vehicule['id'] ?></td>
-                                            <td class="p-3"><img src="../../client/fromtClient/<?= $vehicule['image'] ?>" class="w-10 h-10"></td>
+                                            <td class="p-3"><img src="../../folder/<?=$vehicule['image'] ?>" class="w-10 h-10"></td>
                                             <td class="p-3"><?= $vehicule['category_name'] ?></td>
                                             <td class="p-3"><?= $vehicule['model'] ?></td>
                                             <td class="p-3"><?= $vehicule['mark'] ?></td>

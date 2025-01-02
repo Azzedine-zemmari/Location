@@ -67,7 +67,26 @@ class Vehicule{
         else{
             return $stmt->errorInfo();
         }
+    }
+    public function insert($categoryId,$model,$mark,$prix,$disponibilite,$color,$porte,$transmition,$personne,$image){
+        $sql = "INSERT INTO vehicule (categorieId, model, mark, prix, disponibilite, color, porte, transmition, personne, image) 
+                VALUES (:categorieId, :model, :mark, :prix, :disponibilite, :color, :porte, :transmition, :personne, :image)";
 
+        $stmt = $this->conn->prepare($sql);
+        
+        $stmt->bindParam(":categorieId",$categoryId);
+        $stmt->bindParam(":model",$model);
+        $stmt->bindParam(":mark",$mark);
+        $stmt->bindParam(":prix",$prix);
+        $stmt->bindParam(":disponibilite",$disponibilite);
+        $stmt->bindParam(":color",$color);
+        $stmt->bindParam(":porte",$porte);
+        $stmt->bindParam(":transmition",$transmition);
+        $stmt->bindParam(":personne",$personne);
+        $stmt->bindParam(":image",$image);
 
+        if($stmt->execute()){
+            return true;
+        };
     }
 }

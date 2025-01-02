@@ -119,7 +119,7 @@ $allReviews = $cls3->showAll($id);
                 </div>
                 <!-- Vehicle Image -->
                 <div class="mb-6">
-                    <img src="<?php echo $obj2['image']; ?>" alt="Voiture" class="w-full h-80 object-cover rounded-lg">
+                    <img src="../../folder/<?php echo $obj2['image']; ?>" alt="Voiture" class="w-full h-80 object-cover rounded-lg">
                 </div>
                 <!-- Vehicle Details -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
