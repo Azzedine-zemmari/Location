@@ -23,7 +23,7 @@ class category{
         }
         
     }
-    public function insertInto($nom){
+    public function insertCategory($nom){
         $query = "insert into category(nom) values(:nom)";
 
         $stmt = $this->conn->prepare($query);

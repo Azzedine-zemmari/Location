@@ -2,7 +2,7 @@
 session_start();
 include "../../Config.php";
 
-class authentification{
+class user{
     private $conn;
     public $name;
     public $prenom;
@@ -77,5 +77,16 @@ class authentification{
 
         header("Location: ./LoginAdmin.php");
         exit();
+    }
+    public function showUsers(){
+        $sql = "select * from client";
+        $stmt = $this->conn->prepare($sql);
+
+        if($stmt->execute()){
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+        else{
+            echo "error";
+        }
     }
 }

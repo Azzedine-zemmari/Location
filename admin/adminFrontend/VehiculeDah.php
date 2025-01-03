@@ -2,7 +2,7 @@
 require "../adminLogic/Vehicule.php";
 
 $class = new Vehicule();
-$vehicules = $class->getVehicule();
+$vehicules = $class->getAllVehicule();
 
 ?>
 <!DOCTYPE html>
@@ -103,6 +103,7 @@ $vehicules = $class->getVehicule();
                                         <th class="text-left p-3">porte</th>
                                         <th class="text-left p-3">transmition</th>
                                         <th class="text-left p-3">personne</th>
+                                        <th class="text-left p-3">action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -121,6 +122,8 @@ $vehicules = $class->getVehicule();
                                             <td class="p-3"><?= $vehicule['porte'] ?></td>
                                             <td class="p-3"><?= $vehicule['transmition'] ?></td>
                                             <td class="p-3"><?= $vehicule['personne'] ?></td>
+                                            <td class="p-3"><a class="text-blue-400" href="./updateVehicule.php?id=<?= $vehicule['id']?>">update</a></td>
+                                            <td class="p-3"><a class="text-red-400" href="./deleteVehicule.php?id=<?= $vehicule['id']?>">delete</a></td>
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>

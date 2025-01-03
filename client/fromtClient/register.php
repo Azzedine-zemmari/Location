@@ -41,13 +41,13 @@
         </div>
     </div>
     <?php 
-    include "../ClientLogic/authentification.php";
+    include "../ClientLogic/user.php";
     if(isset($_POST['submit'])){
         $nom = $_POST['nom'];
         $prenom = $_POST['prenom'];
         $email = $_POST['email'];
         $password = $_POST['password'];
-        $cls = new authentification();
+        $cls = new user();
         $register = $cls->register($nom,$prenom,$email,$password);
         if($register){
             header("Location: ./index.php");

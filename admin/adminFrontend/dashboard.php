@@ -1,3 +1,11 @@
+<?php 
+require "../adminLogic/users.php";
+
+$user = new user();
+$users = $user->showUsers();
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -158,7 +166,7 @@
                             <table class="min-w-full">
                                 <thead>
                                     <tr class="border-b">
-                                        <th class="text-left p-3">User</th>
+                                        <th class="text-left p-3">#</th>
                                         <th class="text-left p-3">Vehicle</th>
                                         <th class="text-left p-3">Action</th>
                                         <th class="text-left p-3">Date</th>

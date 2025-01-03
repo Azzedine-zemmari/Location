@@ -1,7 +1,9 @@
 <?php
-require_once "../../Config.php";
-$connection = new connection();
-$connect = $connection->conn();
+require "../adminLogic/Vehicule.php";
+$conn = new connection();
+$connect = $conn->conn();
+
+$vehiculeClass = new Vehicule();
 
 $sql = "select * from category";
 $stmt = $connect->prepare($sql);
@@ -9,10 +11,16 @@ if ($stmt->execute()) {
     $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 if (isset($_POST['submit'])) {
+    if (!isset($_POST['categorie']) || empty($_POST['categorie'])) {
+        die("Category is required");
+    }
     $categorieId = $_POST['categorie'];
 
-    $vehicules = [];
-    $totalVehicules = isset($_POST['counter']) ? $_POST['counter'] : 1;
+    $vehicules = [];    
+    $totalVehicules = isset($_POST['counter']) ? (int)$_POST['counter'] : 1;
+    if ($totalVehicules < 1 || $totalVehicules > 10) { 
+        die("Invalid number of vehicles");
+    }
     for ($vehiculeCounter = 1; $vehiculeCounter <= $totalVehicules; $vehiculeCounter++) {
         if (isset($_POST["model$vehiculeCounter"])) {
             $vehicule = [
@@ -43,24 +51,14 @@ if (isset($_POST['submit'])) {
         }
     }
 
-    // Insert all vehicles
-    foreach ($vehicules as $vehicule) {
-        $sql = "INSERT INTO vehicule (categorieId, model, mark, prix, disponibilite, color, porte, transmition, personne, image) 
-                   VALUES (:categorieId, :model, :mark, :prix, :disponibilite, :color, :porte, :transmition, :personne, :image)";
-
-        $stmt = $connect->prepare($sql);
-        $stmt->execute([
-            ':categorieId' => $categorieId,
-            ':model' => $vehicule['model'],
-            ':mark' => $vehicule['mark'],
-            ':prix' => $vehicule['prix'],
-            ':disponibilite' => $vehicule['disponibilite'],
-            ':color' => $vehicule['color'],
-            ':porte' => $vehicule['porte'],
-            ':transmition' => $vehicule['transmition'],
-            ':personne' => $vehicule['personne'],
-            ':image' => $vehicule['image'] 
-        ]);
+    try {
+        // Insert all vehicles
+        if ($vehiculeClass->insertMultipleVehicles($vehicules)) {
+            header('Location: ../../client/fromtClient/index.php');
+        }
+    } catch (PDOException $e) {
+        // Handle error
+        echo "Error inserting vehicles: " . $e->getMessage();
     }
 }
 ?>

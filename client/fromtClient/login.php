@@ -31,12 +31,12 @@
         </div>
     </div>
     <?php
-    include "../ClientLogic/authentification.php";
+    include "../ClientLogic/user.php";
     if(isset($_POST['submit'])){
         $email = $_POST['email'];
         $password = $_POST['password'];
 
-        $cls = new authentification();
+        $cls = new user();
         $login = $cls->login($email,$password);
         if($login){
             header("Location: ./index.php");

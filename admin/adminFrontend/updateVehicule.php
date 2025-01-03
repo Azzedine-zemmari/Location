@@ -1,17 +1,14 @@
-<?php 
+<?php
 require "../adminLogic/Vehicule.php";
-$connection = new connection();
-$connect = $connection->conn();
+$id = $_GET['id'];
+$vehicule = new Vehicule();
+$vehicules = $vehicule->selectID($id);
 
-$sql = "select * from category";
-$stmt = $connect->prepare($sql);
-if ($stmt->execute()) {
-    $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
-// Check if the form is submitted
-if (isset($_POST['submit'])) {
-    // Get form data
-    $categoryId = $_POST['categorie'];
+$connection = new connection();
+$conn = $connection->conn();
+
+if(isset($_POST['submit'])){
+    $categorie = $_POST['categorie'];
     $model = $_POST['model'];
     $mark = $_POST['mark'];
     $prix = $_POST['prix'];
@@ -20,29 +17,32 @@ if (isset($_POST['submit'])) {
     $porte = $_POST['porte'];
     $transmition = $_POST['transmition'];
     $personne = $_POST['personne'];
+    $id = $_POST['id'];
 
-    // Handle image upload
     if (isset($_FILES['image'])) {
-        $image = $_FILES['image']['name']; // Get the image name
-        $imageTmp = $_FILES['image']['tmp_name']; // Get the temporary path
-        $imageFolder = "../../folder/"; // Define the target folder
-    
-        // Create the full path
-        $imageFullPath = $imageFolder . $image;
-    
+        $image = $_FILES['image']['name'];
+        $image_tmp = $_FILES['image']['tmp_name'];
+        $upload_dir = '../../folder/';
+        $upload_path = $upload_dir . basename($image);
 
-        move_uploaded_file($imageTmp, $imageFullPath); // Upload the image
+        // Move the uploaded file to the uploads directory
+        if (move_uploaded_file($image_tmp, $upload_path)) {
+            $image = basename($upload_path);
+        } else {
+            echo "Error uploading the image.";
+            exit;
+        }
+    } 
+    $update = $vehicule->update($id,$categorie,$model,$mark,$prix,$disponibilite,$color,$porte,$transmition,$personne,$image);
+    if($update){
+        header("location: ./VehiculeDah.php");
     }
-
-    // Call the insert method
-    $vehicule = new Vehicule();
-    $inserted = $vehicule->insert($categoryId, $model, $mark, $prix, $disponibilite, $color, $porte, $transmition, $personne, $image);
-
+    else{
+        echo '<p>ERRRROR</p>';
+    }
 }
 
-
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -64,9 +64,20 @@ if (isset($_POST['submit'])) {
                 <div>
                     <label for="categorieId" class="block text-sm font-medium text-gray-700">Category name</label>
                     <select name="categorie" id="">
-                        <?php foreach ($categories as $categorie): ?>
-                            <option value="<?php echo $categorie['id'] ?>"><?php echo $categorie['nom'] ?></option>
-                        <?php endforeach; ?>
+                      <?php 
+                        $sql_category = "SELECT * FROM category";
+                        $stmt = $conn->prepare($sql_category);
+                        if ($stmt->execute()) {
+                            $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                            foreach ($categories as $categorie) {
+                                $selected = ($categorie['id'] == $vehicules['categorieId']) ? 'selected' : '';
+                                echo "<option value='" . $categorie['id'] . "' $selected>" . $categorie['nom'] . "</option>";
+                            }
+                        } else {
+                            echo "<option>error fetching types</option>";
+                        }
+                      
+                      ?>
                     </select>
                 </div>
             </div>
@@ -77,11 +88,13 @@ if (isset($_POST['submit'])) {
             <div >
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
+                        <input type="hidden" value="<?= $vehicules['id'] ?>" name="id">
                         <label for="model" class="block text-sm font-medium text-gray-700">Model</label>
                         <input
                             type="text"
                             id="model"
                             name="model"
+                            value="<?= $vehicules['model']?>"
                             class="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:ring-indigo-500 focus:border-indigo-500"
                             placeholder="Enter model"
                             required />
@@ -92,6 +105,7 @@ if (isset($_POST['submit'])) {
                             type="text"
                             id="mark"
                             name="mark"
+                            value="<?= $vehicules['mark']?>"
                             class="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:ring-indigo-500 focus:border-indigo-500"
                             placeholder="Enter mark"
                             required />
@@ -102,6 +116,7 @@ if (isset($_POST['submit'])) {
                             type="number"
                             id="prix"
                             name="prix"
+                            value="<?= $vehicules['prix']?>"
                             class="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:ring-indigo-500 focus:border-indigo-500"
                             placeholder="Enter price"
                             step="0.01"
@@ -112,6 +127,7 @@ if (isset($_POST['submit'])) {
                         <select
                             id="disponibilite"
                             name="disponibilite"
+                            value="<?= $vehicules['disponibilite']?>"
                             class="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:ring-indigo-500 focus:border-indigo-500"
                             required>
                             <option value="1">Available</option>
@@ -124,6 +140,7 @@ if (isset($_POST['submit'])) {
                             type="text"
                             id="color"
                             name="color"
+                            value="<?= $vehicules['color']?>"
                             class="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:ring-indigo-500 focus:border-indigo-500"
                             placeholder="Enter color" />
                     </div>
@@ -133,6 +150,7 @@ if (isset($_POST['submit'])) {
                             type="number"
                             id="porte"
                             name="porte"
+                            value="<?= $vehicules['porte']?>"
                             class="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:ring-indigo-500 focus:border-indigo-500"
                             placeholder="Enter number of doors"
                             required />
@@ -143,6 +161,7 @@ if (isset($_POST['submit'])) {
                             type="text"
                             id="transmition"
                             name="transmition"
+                            value="<?= $vehicules['transmition']?>"
                             class="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:ring-indigo-500 focus:border-indigo-500"
                             placeholder="Enter transmission type" />
                     </div>
@@ -152,6 +171,7 @@ if (isset($_POST['submit'])) {
                             type="number"
                             id="personne"
                             name="personne"
+                            value="<?= $vehicules['personne']?>"
                             class="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:ring-indigo-500 focus:border-indigo-500"
                             placeholder="Enter number of persons"
                             required />
@@ -162,6 +182,7 @@ if (isset($_POST['submit'])) {
                             type="file"
                             id="image"
                             name="image"
+                            value="<?= $vehicules['image']?>"
                             class="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:ring-indigo-500 focus:border-indigo-500"
                             accept="image/*" />
                     </div>
