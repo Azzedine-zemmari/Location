@@ -11,19 +11,52 @@ class Vehicule{
         $this->conn = $connection->conn();
     }
 
-    public function getVehicule(){
-        $query = "select * from ListeVehicules";
+    public function getVehicule($page=1,$itemPerPage = 4){
 
-        $stmt = $this->conn->prepare($query);
+        $offset = ($page - 1) * $itemPerPage;
+
+        //count query
+        $query = "select count(*) as total from ListeVehicules";
+
+        $countStmt = $this->conn->prepare($query);
+        $countStmt->execute();
+        $totalCount = $countStmt->fetch(PDO::FETCH_ASSOC);
+        $total = $totalCount['total'];
+        //get all with the pagination
+        $sql = "select * from ListeVehicules limit :limit offset :ofsset";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->bindParam(":limit",$itemPerPage,PDO::PARAM_INT);
+        $stmt->bindParam(":ofsset",$offset,PDO::PARAM_INT);
+
+        
 
         if($stmt->execute()){
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return [
+                'vehicules' => $stmt->fetchAll(PDO::FETCH_ASSOC),
+                'totalElement' => $total,
+                'totalPage' => ceil($total/$itemPerPage)
+        ];
         }
         else{
             echo "errrrrrro";
         }
         
     }
+    // public function getVehicule(){
+    //     $query = "select * from ListeVehicules";
+
+    //     $stmt = $this->conn->prepare($query);
+
+    //     if($stmt->execute()){
+    //         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    //     }
+    //     else{
+    //         echo "errrrrrro";
+    //     }
+        
+    // }
     public function detail($id){
         $query = "select * from Vehicule_Category_View where id = :id";
 

@@ -2,8 +2,13 @@
 
 require "../../admin/adminLogic/Vehicule.php";
 
+$currentPage = (isset($_GET['page'])) ? $_GET['page'] : 1;
+
 $cls = new Vehicule();
-$obj = $cls->getVehicule();
+$obj = $cls->getVehicule($currentPage);
+$vehicules = $obj['vehicules'];
+// print_r($vehiules);
+$totalPage = $obj['totalPage']; 
 
 $class = new connection();
 $connection = $class->conn();
@@ -24,12 +29,6 @@ else{
     $stmt->errorInfo();
 }
 
-// if(isset($_POST['action']) && $_POST['action'] == 'filter'){
-//     $catogry = $_POST['category'];
-//     $obj = $cls->filtrage($catogry);
-//     echo json_encode($obj);
-//     exit();
-// }
 
 
 ?>
@@ -101,8 +100,8 @@ else{
     <div id="vehicles" class="max-w-6xl mx-auto px-4 py-8">
         <h2 class="text-2xl font-bold mb-6">Nos Véhicules</h2>
         <div  id="vehicle-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <?php if (!empty($obj)): ?>    
-        <?php foreach($obj as $o): ?>
+        <?php if (!empty($vehicules)): ?>    
+        <?php foreach($vehicules as $o): ?>
             <div class="bg-white rounded-lg shadow-md overflow-hidden">
                 <img src="../../folder/<?php echo $o['image']; ?>" alt="Voiture" class="w-full h-48 object-cover">
                 <div class="p-4">
@@ -123,6 +122,13 @@ else{
 
         </div>
     </div>
+    <?php echo '<div class="flex justify-center mt-6 gap-2">'?>
+    <?php 
+        for($i=1;$i<=$totalPage;$i++){
+            $activeClass = ($i==$currentPage) ? 'bg-blue-500 text-white' : 'bg-white text-blue-500';
+            echo "<a href='?page=$i' class='px-4 py-2 rounded-md $activeClass'>$i</a>";
+        }
+    ?>
 
 <script>
     document.getElementById("category").addEventListener("change",function(){

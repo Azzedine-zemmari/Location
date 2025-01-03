@@ -80,7 +80,7 @@ if (isset($_POST['submit'])) {
         <h2 class="text-2xl font-bold text-center mb-8">Insert Vehicle and Category</h2>
 
         <!-- Form for Vehicle and Category -->
-        <form action="" method="POST" enctype="multipart/form-data" class="bg-white shadow-md rounded-lg p-6">
+        <form action="" id="MultipleForms" method="POST" enctype="multipart/form-data" class="bg-white shadow-md rounded-lg p-6">
             <!-- Category Section -->
             <div class="mb-6">
                 <h3 class="text-lg font-semibold mb-3">Category</h3>
@@ -97,7 +97,6 @@ if (isset($_POST['submit'])) {
             <hr class="my-6" />
 
             <!-- Vehicle Section -->
-            <div id="MultipleForms">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label for="model" class="block text-sm font-medium text-gray-700">Model</label>
@@ -205,7 +204,6 @@ if (isset($_POST['submit'])) {
                     class="bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700">
                     add more vehicule
                 </button>
-            </div>
         </form>
     </div>
     <script>
