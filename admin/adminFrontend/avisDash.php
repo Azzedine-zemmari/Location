@@ -1,4 +1,9 @@
 <?php
+session_start();
+if (!isset($_SESSION['userId']) || ($_SESSION['role'] !== 'admin')) {
+    echo "Access denied!";
+    exit();
+}
 require "../../client/ClientLogic/Avis.php";
 
 $class = new avis();
@@ -25,15 +30,15 @@ $avis = $class->getAll();
                 <h2 class="text-2xl font-bold">Admin Panel</h2>
             </div>
             <nav>
-                <ul class="space-y-2">
+            <ul class="space-y-2">
                     <li>
-                        <a href="#" class="flex items-center space-x-2 p-2 hover:bg-indigo-700 rounded">
+                        <a href="../../client/fromtClient/index.php" class="flex items-center space-x-2 p-2 hover:bg-indigo-700 rounded">
                             <i class="fas fa-home"></i>
-                            <span>Dashboard</span>
+                            <span>Home</span>
                         </a>
                     </li>
                     <li>
-                        <a href="./Vehicule.php" class="flex items-center space-x-2 p-2 hover:bg-indigo-700 rounded">
+                        <a href="./VehiculeDah.php" class="flex items-center space-x-2 p-2 hover:bg-indigo-700 rounded">
                             <i class="fas fa-car"></i>
                             <span>Vehicles</span>
                         </a>
@@ -41,19 +46,19 @@ $avis = $class->getAll();
                     <li>
                         <a href="#" class="flex items-center space-x-2 p-2 hover:bg-indigo-700 rounded">
                             <i class="fas fa-users"></i>
-                            <span>Users</span>
+                            <span>AVIS</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="flex items-center space-x-2 p-2 hover:bg-indigo-700 rounded">
+                        <a href="./ReservationDash.php" class="flex items-center space-x-2 p-2 hover:bg-indigo-700 rounded">
                             <i class="fas fa-calendar"></i>
                             <span>Reservations</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="flex items-center space-x-2 p-2 hover:bg-indigo-700 rounded">
+                        <a href="./categoryDash.php" class="flex items-center space-x-2 p-2 hover:bg-indigo-700 rounded">
                             <i class="fas fa-cog"></i>
-                            <span>Settings</span>
+                            <span>Category</span>
                         </a>
                     </li>
                 </ul>

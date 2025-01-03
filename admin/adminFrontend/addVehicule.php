@@ -1,4 +1,9 @@
 <?php 
+session_start();
+if (!isset($_SESSION['userId']) || ($_SESSION['role'] !== 'admin')) {
+    echo "Access denied!";
+    exit();
+}
 require "../adminLogic/Vehicule.php";
 $connection = new connection();
 $connect = $connection->conn();

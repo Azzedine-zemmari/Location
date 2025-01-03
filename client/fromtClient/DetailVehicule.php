@@ -1,5 +1,9 @@
 <?php
 session_start();
+if (!isset($_SESSION['userId']) || ($_SESSION['role'] !== 'user')) {
+    echo "Access denied!";
+    exit();
+}
 require "../../admin/adminLogic/Vehicule.php";
 require "../ClientLogic/reservationLogic.php";
 require "../ClientLogic/Avis.php";
@@ -9,7 +13,7 @@ $obj2 = $cls->detail($id);
 
 $cls2 = new reservation();
 $userId = $_SESSION['userId'];
-$hasReserv = $cls2->hasReservation($userId);
+$hasReserv = $cls2->hasReservation($userId,$id);
 $cls3 = new avis();
 if($hasReserv){
 if(isset($_POST['submit'])){

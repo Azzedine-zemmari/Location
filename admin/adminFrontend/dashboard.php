@@ -1,8 +1,20 @@
 <?php 
-require "../adminLogic/users.php";
+session_start();
+if (!isset($_SESSION['userId']) || ($_SESSION['role'] !== 'admin')) {
+    echo "Access denied!";
+    exit();
+}
+require "../adminLogic/statistics.php";
 
-$user = new user();
-$users = $user->showUsers();
+$static = new statics();
+$numberClient = $static->getUserCount();
+$numberVehicule = $static->getVehiculeCount();
+$numberReservation = $static->getReservationCount();
+$numberRservationAttent = $static->getReservationattent();
+$numberReservationAccepter = $static->getReservationAccepter();
+$numberReservationAnnuler = $static->getReservationRefuser();
+
+
 
 ?>
 
@@ -24,35 +36,35 @@ $users = $user->showUsers();
                 <h2 class="text-2xl font-bold">Admin Panel</h2>
             </div>
             <nav>
-                <ul class="space-y-2">
+            <ul class="space-y-2">
                     <li>
-                        <a href="#" class="flex items-center space-x-2 p-2 hover:bg-indigo-700 rounded">
+                        <a href="./dashboard.php" class="flex items-center space-x-2 p-2 hover:bg-indigo-700 rounded">
                             <i class="fas fa-home"></i>
-                            <span>Dashboard</span>
+                            <span>Home</span>
                         </a>
                     </li>
                     <li>
-                        <a href="./Vehicule.php" class="flex items-center space-x-2 p-2 hover:bg-indigo-700 rounded">
+                        <a href="./VehiculeDah.php" class="flex items-center space-x-2 p-2 hover:bg-indigo-700 rounded">
                             <i class="fas fa-car"></i>
                             <span>Vehicles</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="flex items-center space-x-2 p-2 hover:bg-indigo-700 rounded">
+                        <a href="./avisDash.php" class="flex items-center space-x-2 p-2 hover:bg-indigo-700 rounded">
                             <i class="fas fa-users"></i>
-                            <span>Users</span>
+                            <span>AVIS</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="flex items-center space-x-2 p-2 hover:bg-indigo-700 rounded">
+                        <a href="./ReservationDash.php" class="flex items-center space-x-2 p-2 hover:bg-indigo-700 rounded">
                             <i class="fas fa-calendar"></i>
                             <span>Reservations</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="flex items-center space-x-2 p-2 hover:bg-indigo-700 rounded">
+                        <a href="./categoryDash.php" class="flex items-center space-x-2 p-2 hover:bg-indigo-700 rounded">
                             <i class="fas fa-cog"></i>
-                            <span>Settings</span>
+                            <span>Category</span>
                         </a>
                     </li>
                 </ul>
@@ -88,7 +100,7 @@ $users = $user->showUsers();
                         <div class="flex items-center justify-between">
                             <div>
                                 <h3 class="text-gray-500 text-sm">Total Vehicles</h3>
-                                <p class="text-2xl font-bold">245</p>
+                                <p class="text-2xl font-bold"><?= $numberVehicule ?></p>
                             </div>
                             <div class="bg-blue-100 p-3 rounded-full">
                                 <i class="fas fa-car text-blue-600"></i>
@@ -102,8 +114,8 @@ $users = $user->showUsers();
                     <div class="bg-white rounded-lg shadow p-6">
                         <div class="flex items-center justify-between">
                             <div>
-                                <h3 class="text-gray-500 text-sm">Active Rentals</h3>
-                                <p class="text-2xl font-bold">84</p>
+                                <h3 class="text-gray-500 text-sm">Client</h3>
+                                <p class="text-2xl font-bold"><?= $numberClient?></p>
                             </div>
                             <div class="bg-green-100 p-3 rounded-full">
                                 <i class="fas fa-key text-green-600"></i>
@@ -117,8 +129,8 @@ $users = $user->showUsers();
                     <div class="bg-white rounded-lg shadow p-6">
                         <div class="flex items-center justify-between">
                             <div>
-                                <h3 class="text-gray-500 text-sm">Total Users</h3>
-                                <p class="text-2xl font-bold">1,238</p>
+                                <h3 class="text-gray-500 text-sm">Total Reservation</h3>
+                                <p class="text-2xl font-bold"><?= $numberReservation?></p>
                             </div>
                             <div class="bg-purple-100 p-3 rounded-full">
                                 <i class="fas fa-users text-purple-600"></i>
@@ -132,8 +144,8 @@ $users = $user->showUsers();
                     <div class="bg-white rounded-lg shadow p-6">
                         <div class="flex items-center justify-between">
                             <div>
-                                <h3 class="text-gray-500 text-sm">Revenue</h3>
-                                <p class="text-2xl font-bold">$84,325</p>
+                                <h3 class="text-gray-500 text-sm">Rservation accepter</h3>
+                                <p class="text-2xl font-bold"><?= $numberReservationAccepter?></p>
                             </div>
                             <div class="bg-yellow-100 p-3 rounded-full">
                                 <i class="fas fa-dollar-sign text-yellow-600"></i>
@@ -158,7 +170,7 @@ $users = $user->showUsers();
                     </div>
                 </div> -->
 
-                <!-- Recent Activity -->
+                <!-- Recent Activity
                 <div class="mt-6 bg-white rounded-lg shadow">
                     <div class="p-6">
                         <h3 class="text-lg font-semibold mb-4">Recent Activity</h3>
@@ -195,58 +207,11 @@ $users = $user->showUsers();
                             </table>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </main>
         </div>
     </div>
 
-    <script>
-        // // Revenue Chart
-        // const revenueCtx = document.getElementById('revenueChart').getContext('2d');
-        // new Chart(revenueCtx, {
-        //     type: 'line',
-        //     data: {
-        //         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-        //         datasets: [{
-        //             label: 'Revenue',
-        //             data: [65000, 59000, 80000, 81000, 76000, 84000],
-        //             borderColor: 'rgb(79, 70, 229)',
-        //             tension: 0.1
-        //         }]
-        //     },
-        //     options: {
-        //         responsive: true,
-        //         maintainAspectRatio: false
-        //     }
-        // });
 
-        // // Categories Chart
-        // const categoriesCtx = document.getElementById('categoriesChart').getContext('2d');
-        // new Chart(categoriesCtx, {
-        //     type: 'doughnut',
-        //     data: {
-        //         labels: ['SUV', 'Sedan', 'Sports', 'Luxury'],
-        //         datasets: [{
-        //             data: [35, 25, 20, 20],
-        //             backgroundColor: [
-        //                 'rgb(79, 70, 229)',
-        //                 'rgb(59, 130, 246)',
-        //                 'rgb(16, 185, 129)',
-        //                 'rgb(245, 158, 11)'
-        //             ]
-        //         }]
-        //     },
-        //     options: {
-        //         responsive: true,
-        //         maintainAspectRatio: false
-        //     }
-        // });
-
-        // Mobile menu toggle
-        document.querySelector('.fa-bars').addEventListener('click', () => {
-            const sidebar = document.querySelector('aside');
-            sidebar.classList.toggle('hidden');
-        });
-    </script>
 </body>
 </html>

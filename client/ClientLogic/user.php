@@ -75,7 +75,7 @@ class user{
         session_unset();
 
 
-        header("Location: ./LoginAdmin.php");
+        header("Location: ../fromtClient/login.php");
         exit();
     }
     public function showUsers(){

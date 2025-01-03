@@ -1,4 +1,6 @@
 <?php 
+session_start();
+
 require "../../Config.php";
 class adminAuth{
     private $conn;
@@ -22,6 +24,8 @@ class adminAuth{
         if($stmt->execute()){
             $user = $stmt->fetch();
             if($password == $user['password']){
+                $_SESSION['userId'] = $user['id'];
+                $_SESSION['role'] = 'admin';
                 return true;
             }
             else{

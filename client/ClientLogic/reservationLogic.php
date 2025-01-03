@@ -27,11 +27,12 @@ class reservation {
         }
 
     }
-    public function hasReservation($userId){
-        $query = "select * from reservation where userId = :userId"; // logic error
+    public function hasReservation($userId,$vehiculeId){
+        $query = "select * from reservation where userId = :userId and vehiculeId = :vehiculeId"; // logic error
 
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(":userId",$userId);
+        $stmt->bindParam(":vehiculeId",$vehiculeId);
         
         if ($stmt->execute()) {
             $result = $stmt->fetch(); // Fetch only the first row
@@ -56,5 +57,29 @@ class reservation {
             return $result;
         } 
     
+    }
+    public function acceptReserve($id){
+        $sql = "update reservation set status = 'accepter' where id = :id";
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->bindParam(":id",$id);
+        if($stmt->execute()){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    public function refuserReserve($id){
+        $sql = "update reservation set status = 'annuller' where id = :id";
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->bindParam(":id",$id);
+        if($stmt->execute()){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }

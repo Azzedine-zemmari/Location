@@ -1,5 +1,9 @@
 <?php 
-
+session_start();
+if (!isset($_SESSION['userId']) || ($_SESSION['role'] !== 'user')) {
+    echo "Access denied!";
+    exit();
+}
 require "../../admin/adminLogic/Vehicule.php";
 
 $currentPage = (isset($_GET['page'])) ? $_GET['page'] : 1;
@@ -55,8 +59,7 @@ else{
                     <a href="#" class="text-gray-700 hover:text-blue-600">Réservation</a>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <button class="px-4 py-2 text-gray-700 hover:text-blue-600">Connexion</button>
-                    <button class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Inscription</button>
+                    <a href="../ClientLogic/logoutUser.php" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">logout</a>
                 </div>
             </div>
         </div>
