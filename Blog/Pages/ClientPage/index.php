@@ -142,18 +142,18 @@ if(isset($_POST['submit'])){
         <!-- Sidebar Section -->
         <aside class="w-full md:w-1/3 flex flex-col items-center px-3">
 
-            <div class="sticky top-0 w-full bg-white shadow flex flex-col my-4 p-6">
+            <div class=" w-full bg-white shadow flex flex-col my-4 p-6">
                 <p class="text-xl font-semibold pb-5">tu peux ajouter votre article ici!</p>
                 <p class="pb-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas mattis est eu odio sagittis tristique. Vestibulum ut finibus leo. In hac habitasse platea dictumst.</p>
                 <button onclick="togglePopup()" class="w-full bg-blue-800 text-white font-bold text-sm uppercase rounded hover:bg-blue-700 flex items-center justify-center px-2 py-3 mt-4">
             Add New Article
         </button>
             </div>
-            <div class="w-full bg-white shadow flex flex-col my-4 p-6">
+            <div class=" w-full  bg-white shadow flex flex-col my-4 p-6">
         <p class="text-xl font-semibold pb-4">Rechercher et Filtrer</p>
         
         <!-- Search Input -->
-        <div class="relative mb-4">
+        <div class=" relative mb-4">
             <input 
                 type="text" 
                 id="searchInput" 
@@ -180,7 +180,7 @@ if(isset($_POST['submit'])){
         </div>
     </div>
 
-             <!-- Popup Overlay -->
+            <!-- Popup Overlay -->
     <div id="articlePopup" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center">
         <!-- Popup Content -->
         <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4">
@@ -285,7 +285,45 @@ document.getElementById("themes").addEventListener("click", (event) => {
         });
     }
 });
+document.getElementById("searchInput").addEventListener("keydown",(event)=>{
+    if(event.key == "Enter"){
+        event.preventDefault();
+        const title = event.target.value;
+        fetch("../../AjaxFiles/SearchArticle.php",{
+            method : 'POST',
+            headers: {
+                "Content-type": "application/x-www-form-urlencoded",
+            },
+            body: `title=${title}`
+        })
+        .then((response)=>response.json())
+        .then((articles) => {
+            console.log("Themes fetched:", articles);
+            const main = document.getElementById("POSTS");
+            main.innerHTML = '';
 
+            articles.forEach((article) => {
+                main.innerHTML += `
+                    <article class="flex flex-col shadow my-4">
+                        <a href="#" class="hover:opacity-75">
+                            <img src="${article.media}" alt="Theme Image">
+                        </a>
+                        <div class="bg-white flex flex-col justify-start p-6">
+                            <a href="#" class="text-blue-700 text-sm font-bold uppercase pb-4">${article.title}</a>
+                            <a href="#" class="pb-6">${article.content}</a>
+                            <a href="#" class="uppercase text-gray-800 hover:text-black">
+                                Continue Reading <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </article>
+                `;
+            });
+        })
+        .catch((error) => {
+            console.error("Error in fetch:", error);
+        });
+    }
+})
 function togglePopup() {
     const popup = document.getElementById('articlePopup');
     popup.classList.toggle('hidden');
