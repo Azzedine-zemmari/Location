@@ -1,8 +1,39 @@
 <?php 
-require "../../../Config.php";
-require "../../Class/themeClass.php";
+session_start();
+include "../../../Config.php";
+include "../../Class/themeClass.php";
+include "../../Class/articleClass.php";
 $themeClass = new them();
 $themes = $themeClass->showAll();
+var_dump($_POST);
+var_dump($_FILES);
+if(isset($_POST['submit'])){
+    $title = $_POST['title'];
+    $content = $_POST['content'];
+    $themeId = $_POST['themeID'];
+
+    if (isset($_FILES['image']['tmp_name']) && !empty($_FILES['image']['name'])) {
+        $imagePath = './uploads/'.$_FILES['image']['name'];
+        move_uploaded_file($_FILES['image']['tmp_name'], $imagePath);
+    }
+    if(isset($_FILES['vedeo']['name']) && !empty($_FILES['vedeo']['name'])){
+        $vedeoPath = './uploads/'.$_FILES['vedeo']['name'];
+        move_uploaded_file($_FILES['vedeo']['tmp_name'], $vedeoPath);
+    }
+
+    $articleClass = new article();
+    $add = $articleClass->addArticle($content,$imagePath,$vedeoPath,$title,$themeId);
+    if($add){
+        $_SESSION['message'] = "article added successfully";
+    }
+    else{
+        $_SESSION['message'] =  "theres an error ";
+    }
+      // Redirect to avoid form resubmission
+      header("Location: " . $_SERVER['PHP_SELF']);
+      exit;
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -97,55 +128,8 @@ $themes = $themeClass->showAll();
 
         <!-- Posts Section -->
         <section id="POSTS" class="w-full md:w-2/3 flex flex-col items-center px-3">
-
-            <article class="flex flex-col shadow my-4">
-                <!-- Article Image -->
-                <a href="#" class="hover:opacity-75">
-                    <img src="./image/tech.jpg">
-                </a>
-                <div class="bg-white flex flex-col justify-start p-6">
-                    <a href="#" class="text-blue-700 text-sm font-bold uppercase pb-4">Technology</a>
-                    <a href="#" class="text-3xl font-bold hover:text-gray-700 pb-4">Lorem Ipsum Dolor Sit Amet Dolor Sit Amet</a>
-                    <p href="#" class="text-sm pb-3">
-                        By <a href="#" class="font-semibold hover:text-gray-800">David Grzyb</a>, Published on April 25th, 2020
-                    </p>
-                    <a href="#" class="pb-6">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus quis porta dui. Ut eu iaculis massa. Sed ornare ligula lacus, quis iaculis dui porta volutpat. In sit amet posuere magna..</a>
-                    <a href="#" class="uppercase text-gray-800 hover:text-black">Continue Reading <i class="fas fa-arrow-right"></i></a>
-                </div>
-            </article>
-
-            <article class="flex flex-col shadow my-4">
-                <!-- Article Image -->
-                <a href="#" class="hover:opacity-75">
-                <img src="./image/tech.jpg">
-                </a>
-                <div class="bg-white flex flex-col justify-start p-6">
-                    <a href="#" class="text-blue-700 text-sm font-bold uppercase pb-4">Automotive, Finance</a>
-                    <a href="#" class="text-3xl font-bold hover:text-gray-700 pb-4">Lorem Ipsum Dolor Sit Amet Dolor Sit Amet</a>
-                    <p href="#" class="text-sm pb-3">
-                        By <a href="#" class="font-semibold hover:text-gray-800">David Grzyb</a>, Published on January 12th, 2020
-                    </p>
-                    <a href="#" class="pb-6">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus quis porta dui. Ut eu iaculis massa. Sed ornare ligula lacus, quis iaculis dui porta volutpat. In sit amet posuere magna..</a>
-                    <a href="#" class="uppercase text-gray-800 hover:text-black">Continue Reading <i class="fas fa-arrow-right"></i></a>
-                </div>
-            </article>
-
-            <article class="flex flex-col shadow my-4">
-                <!-- Article Image -->
-                <a href="#" class="hover:opacity-75">
-                <img src="./image/tech.jpg">
-                </a>
-                <div class="bg-white flex flex-col justify-start p-6">
-                    <a href="#" class="text-blue-700 text-sm font-bold uppercase pb-4">Sports</a>
-                    <a href="#" class="text-3xl font-bold hover:text-gray-700 pb-4">Lorem Ipsum Dolor Sit Amet Dolor Sit Amet</a>
-                    <p href="#" class="text-sm pb-3">
-                        By <a href="#" class="font-semibold hover:text-gray-800">David Grzyb</a>, Published on October 22nd, 2019
-                    </p>
-                    <a href="#" class="pb-6">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus quis porta dui. Ut eu iaculis massa. Sed ornare ligula lacus, quis iaculis dui porta volutpat. In sit amet posuere magna..</a>
-                    <a href="#" class="uppercase text-gray-800 hover:text-black">Continue Reading <i class="fas fa-arrow-right"></i></a>
-                </div>
-            </article>
-
+                <p>choose a theme first !
+                                    </p>
             <!-- Pagination -->
             <div class="flex items-center py-8">
                 <a href="#" class="h-10 w-10 bg-blue-800 hover:bg-blue-600 font-semibold text-white text-sm flex items-center justify-center">1</a>
@@ -159,60 +143,154 @@ $themes = $themeClass->showAll();
         <aside class="w-full md:w-1/3 flex flex-col items-center px-3">
 
             <div class="sticky top-0 w-full bg-white shadow flex flex-col my-4 p-6">
-                <p class="text-xl font-semibold pb-5">About Us</p>
+                <p class="text-xl font-semibold pb-5">tu peux ajouter votre article ici!</p>
                 <p class="pb-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas mattis est eu odio sagittis tristique. Vestibulum ut finibus leo. In hac habitasse platea dictumst.</p>
-                <a href="#" class="w-full bg-blue-800 text-white font-bold text-sm uppercase rounded hover:bg-blue-700 flex items-center justify-center px-2 py-3 mt-4">
-                    Get to know us
-                </a>
+                <button onclick="togglePopup()" class="w-full bg-blue-800 text-white font-bold text-sm uppercase rounded hover:bg-blue-700 flex items-center justify-center px-2 py-3 mt-4">
+            Add New Article
+        </button>
             </div>
+            <div class="w-full bg-white shadow flex flex-col my-4 p-6">
+        <p class="text-xl font-semibold pb-4">Rechercher et Filtrer</p>
+        
+        <!-- Search Input -->
+        <div class="relative mb-4">
+            <input 
+                type="text" 
+                id="searchInput" 
+                placeholder="Rechercher un article..." 
+                class="w-full bg-gray-100 border border-gray-300 text-gray-800 rounded py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                oninput="handleSearch(this.value)"
+            />
+            <i class="fas fa-search absolute right-4 top-3 text-gray-500"></i>
+        </div>
+
+        <!-- Filter Select -->
+        <div class="relative">
+            <select 
+                id="filterSelect" 
+                class="w-full bg-gray-100 border border-gray-300 text-gray-800 rounded py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                onchange="handleFilter(this.value)"
+            >
+                <option value="">Filtrer par thème</option>
+                <option value="1">Thème 1</option>
+                <option value="2">Thème 2</option>
+                <option value="3">Thème 3</option>
+                <!-- Add more options as needed -->
+            </select>
+        </div>
+    </div>
+
+             <!-- Popup Overlay -->
+    <div id="articlePopup" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center">
+        <!-- Popup Content -->
+        <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold">Add New Article</h2>
+                <button onclick="togglePopup()" class="text-gray-500 hover:text-gray-700">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <form id="articleForm" method="post" enctype="multipart/form-data" class="space-y-4">
+                <!-- Theme Select -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Theme</label>
+                    <select id="theme" name="themeID" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="">Select a theme</option>
+                        <?php foreach($themes as $theme): ?>
+                        <option value="<?= $theme['id']?>"><?= $theme['name']?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+
+                <!-- Title Input -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                    <input type="text" name="title" id="title" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+
+                <!-- Content Textarea -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Content</label>
+                    <textarea id="content" name="content" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                </div>
+
+                <!-- Image Upload -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Image</label>
+                    <input type="file" name="image" id="image"  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+
+                <!-- video Upload -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Vedeo</label>
+                    <input type="file" name="vedeo" id="vedeo"  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+
+
+                <!-- Submit Button -->
+                <button type="submit" name="submit" class="w-full bg-blue-800 text-white font-bold py-2 px-4 rounded hover:bg-blue-700">
+                    Submit Article
+                </button>
+            </form>
+        </div>
+    </div>
         </aside>
 
     </div>
 
 
 <script>
-document.getElementById("themes").addEventListener("click",(event)=>{
-        if(event.target.tagName == 'BUTTON'){
-            event.preventDefault();
+document.getElementById("themes").addEventListener("click", (event) => {
+    if (event.target.tagName === 'BUTTON') {
+        event.preventDefault();
 
-            const theme = event.target.value;
-            console.log("theme",theme);
+        const theme = event.target.value;
+        console.log("Selected theme:", theme);
 
-            fetch("../../AjaxFiles/showArticle.php",{
-                method:'POST',
-                headers:{
-                    "Content-type" : "application/x-www-form-urlencoded",
-                },
-                body:`theme=${theme}`
-            })
-            .then((response)=>response.json())
-            .then((themes)=>{
-                console.log("testAjax",themes);
-                const main = document.getElementById("POSTS");
-                main.innerHTML = '';
+        fetch("../../AjaxFiles/showArticle.php", {
+            method: 'POST',
+            headers: {
+                "Content-type": "application/x-www-form-urlencoded",
+            },
+            body: `theme=${theme}`
+        })
+        .then((response) => response.json())
+        .then((articles) => {
+            console.log("Themes fetched:", articles);
+            const main = document.getElementById("POSTS");
+            main.innerHTML = '';
 
-                themes.forEach((theme)=>{
-                    main.innerHTML+=`
-                        <article class="flex flex-col shadow my-4">
-                <!-- Article Image -->
-                <a href="#" class="hover:opacity-75">
-                <img src="${theme.media}">
-                </a>
-                <div class="bg-white flex flex-col justify-start p-6">
-                    <a href="#" class="text-blue-700 text-sm font-bold uppercase pb-4">${theme.title}</a>
-                    <!--<p href="#" class="text-sm pb-3">
-                        By <a href="#" class="font-semibold hover:text-gray-800">David Grzyb</a>, Published on January 12th, 2020
-                    </p>-->
-                    <a href="#" class="pb-6">${theme.content}</a>
-                    <a href="#" class="uppercase text-gray-800 hover:text-black">Continue Reading <i class="fas fa-arrow-right"></i></a>
-                </div>
-            </article>
-                    `
-                })
-            })
-        }
+            articles.forEach((article) => {
+                main.innerHTML += `
+                    <article class="flex flex-col shadow my-4">
+                        <a href="#" class="hover:opacity-75">
+                            <img src="${article.media}" alt="Theme Image">
+                        </a>
+                        <div class="bg-white flex flex-col justify-start p-6">
+                            <a href="#" class="text-blue-700 text-sm font-bold uppercase pb-4">${article.title}</a>
+                            <a href="#" class="pb-6">${article.content}</a>
+                            <a href="#" class="uppercase text-gray-800 hover:text-black">
+                                Continue Reading <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </article>
+                `;
+            });
+        })
+        .catch((error) => {
+            console.error("Error in fetch:", error);
+        });
+    }
+});
 
-    })
+function togglePopup() {
+    const popup = document.getElementById('articlePopup');
+    popup.classList.toggle('hidden');
+}
+
 </script>
 </body>
 </html>

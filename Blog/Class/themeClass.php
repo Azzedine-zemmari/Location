@@ -1,6 +1,5 @@
 <?php 
-
-require_once "../../../Config.php";
+include_once "../../Config.php";
 
 class them{
     private $conn;
@@ -18,10 +17,10 @@ class them{
         $stmt = $this->conn->prepare($sql);
         $stmt->bindParam(":name",$this->themenom);
         if($stmt->execute()){
-            echo "<p>Success</p>";
+            echo "Success";
         }
         else{
-            echo "<p>Error</p>";
+            echo "Error";
         }
     }
     public function showAll(){
@@ -32,7 +31,7 @@ class them{
             return $result;
         }
         else{
-            echo '<p>Errror in theme show</p>';
+            echo 'Errror in theme show';
         }
     }
 }

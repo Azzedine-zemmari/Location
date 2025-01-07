@@ -1,12 +1,17 @@
 <?php
 
-require "../Class/articleClass.php";
-
-if(isset($_POST['theme'])){
+require_once "../Class/articleClass.php";
+if (isset($_POST['theme'])) {
     $theme = $_POST['theme'];
     $class = new article();
 
     $result = $class->showArticle($theme);
 
-    echo json_encode($result);
+    if ($result) {
+        echo json_encode($result);
+    } else {
+        echo json_encode(["error" => "No articles found"]);
+    }
+} else {
+    echo json_encode(["error" => "Theme parameter not set"]);
 }
