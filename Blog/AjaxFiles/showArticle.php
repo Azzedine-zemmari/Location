@@ -6,7 +6,7 @@ if (isset($_POST['theme'])) {
     $class = new article();
 
     $result = $class->showArticle($theme);
-
+    
     if ($result) {
         echo json_encode($result);
     } else {

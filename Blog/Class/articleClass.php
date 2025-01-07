@@ -20,7 +20,19 @@ class article{
     }
     // show article based on there theme
     public function showArticle($themeId){
-    $sql = "select * from article where themeId = :themeId";
+    $sql = "SELECT 
+    article.*,
+    GROUP_CONCAT(tags.tag SEPARATOR ', ') AS tags
+FROM 
+    location.article AS article
+left JOIN 
+    location.tags AS tags 
+ON 
+    tags.articlId = article.id
+where themeId = :themeId
+GROUP BY 
+    article.id;
+";
     $stmt = $this->conn->prepare($sql);
     $stmt->bindParam(":themeId",$themeId);
     if($stmt->execute()){

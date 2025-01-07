@@ -261,9 +261,11 @@ document.getElementById("themes").addEventListener("click", (event) => {
         .then((articles) => {
             console.log("Themes fetched:", articles);
             const main = document.getElementById("POSTS");
-            main.innerHTML = '';
-
+            main.innerHTML = ''
             articles.forEach((article) => {
+                const tags = article.tags ? article.tags.split(", ").map((tag)=>
+                 `<button class="bg-transparent border-2 border-sky-500 rounded-full text-blue-400 text-sm px-3 py-1 m-1">${tag}</button>`
+            ):''
                 main.innerHTML += `
                     <article class="flex flex-col shadow my-4">
                         <a href="#" class="hover:opacity-75">
@@ -272,6 +274,7 @@ document.getElementById("themes").addEventListener("click", (event) => {
                         <div class="bg-white flex flex-col justify-start p-6">
                             <a href="#" class="text-blue-700 text-sm font-bold uppercase pb-4">${article.title}</a>
                             <a href="#" class="pb-6">${article.content}</a>
+                            <div class="flex flex-wrap">${tags}</div>
                             <a href="#" class="uppercase text-gray-800 hover:text-black">
                                 Continue Reading <i class="fas fa-arrow-right"></i>
                             </a>
