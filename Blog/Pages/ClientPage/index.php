@@ -3,6 +3,7 @@ session_start();
 include "../../../Config.php";
 include "../../Class/themeClass.php";
 include "../../Class/articleClass.php";
+include "../../Class/tagClass.php";
 $themeClass = new them();
 $themes = $themeClass->showAll();
 var_dump($_POST);
@@ -33,7 +34,9 @@ if(isset($_POST['submit'])){
       header("Location: " . $_SERVER['PHP_SELF']);
       exit;
 }
-
+$tags = new tags();
+$showTags = $tags->getAllTags();
+// var_dump($showTags);
 ?>
 
 <!DOCTYPE html>
@@ -159,7 +162,6 @@ if(isset($_POST['submit'])){
                 id="searchInput" 
                 placeholder="Rechercher un article..." 
                 class="w-full bg-gray-100 border border-gray-300 text-gray-800 rounded py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                oninput="handleSearch(this.value)"
             />
             <i class="fas fa-search absolute right-4 top-3 text-gray-500"></i>
         </div>
@@ -169,12 +171,10 @@ if(isset($_POST['submit'])){
             <select 
                 id="filterSelect" 
                 class="w-full bg-gray-100 border border-gray-300 text-gray-800 rounded py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                onchange="handleFilter(this.value)"
             >
-                <option value="">Filtrer par thème</option>
-                <option value="1">Thème 1</option>
-                <option value="2">Thème 2</option>
-                <option value="3">Thème 3</option>
+            <?php foreach($showTags as $tag): ?>
+                <option value="<?= $tag['id'] ?>"><?= $tag['tag'] ?></option>
+            <?php endforeach; ?>
                 <!-- Add more options as needed -->
             </select>
         </div>
@@ -323,6 +323,47 @@ document.getElementById("searchInput").addEventListener("keydown",(event)=>{
             console.error("Error in fetch:", error);
         });
     }
+})
+document.getElementById("filterSelect").addEventListener("change",function(){
+        const tagId = this.value
+        console.log("this is tag id",tagId);
+        fetch("../../AjaxFiles/filterByTag.php",{
+            method : 'POST',
+            headers: {
+                "Content-type": "application/x-www-form-urlencoded",
+            },
+            body: `tag=${tagId}`
+        })
+        .then((response)=>response.json())
+        .then((articles) => {
+            console.log("Themes fetched:", articles)
+            const main = document.getElementById("POSTS")
+            main.innerHTML = ''
+
+            if(articles.notFound){
+                main.innerHTML = `<p class="text-center text-blue-700">${articles.notFound}</p>`;
+            }else if(articles.length > 0){
+            articles.forEach((article) => {
+                main.innerHTML += `
+                    <article class="flex flex-col shadow my-4">
+                        <a href="#" class="hover:opacity-75">
+                            <img src="${article.media}" alt="Theme Image">
+                        </a>
+                        <div class="bg-white flex flex-col justify-start p-6">
+                            <a href="#" class="text-blue-700 text-sm font-bold uppercase pb-4">${article.title}</a>
+                            <a href="#" class="pb-6">${article.content}</a>
+                            <a href="#" class="uppercase text-gray-800 hover:text-black">
+                                Continue Reading <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </article>
+                `;
+            });
+        }
+        })
+        .catch((error) => {
+            console.error("Error in fetch:", error);
+        });
 })
 function togglePopup() {
     const popup = document.getElementById('articlePopup');

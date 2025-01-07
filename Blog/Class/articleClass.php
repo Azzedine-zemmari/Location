@@ -61,4 +61,20 @@ class article{
         }
 
     }
+    public function filtrage($tagId){
+        $sql = "select article.* , tags.tag  from article_tag
+        join article on article.id = article_tag.articleId 
+        join tags on tags.id = article_tag.tagId 
+        where tags.id = :tagId";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(":tagId",$tagId);
+        if($stmt->execute()){
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        }
+        else{
+            return false;
+        }
+
+    }
 }
