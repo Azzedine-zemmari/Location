@@ -1,6 +1,6 @@
 <?php 
 
-// define('ROOT_PATH', dirname(__DIR__, 2));
+define('ROOT_PATH', dirname(__DIR__, 2));
 include_once ROOT_PATH."/Config.php";
 
 class article{
@@ -101,5 +101,35 @@ GROUP BY
             return false;
         }
 
+    }
+    public function addtofavorite($articleId,$userId){
+        $sql = "insert into favorite(articleId,userId) values(:articleId,:userId)";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->bindParam(":articleId",$articleId);
+        $stmt->bindParam(":userId",$userId);
+
+        if($stmt->execute()){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    public function showallFavoriteArticle($userId){
+        $sql = "select * from favorite join article on article.id = favorite.articleId where userId = :userId";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->bindParam(":userId",$userId);
+
+        if($stmt->execute()){
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+        else{
+            return false;
+        }
     }
 }

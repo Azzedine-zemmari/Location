@@ -163,8 +163,12 @@ $data = $article->showArticles();
                     <a href="#" class="hover:opacity-75">
                         <img src="<?= $obj['media'] ?>" alt="Theme Image">
                     </a>
+                    <form action="../traitementPage/addToFavorite.php" method="post">
+                        <input type="hidden" name="article_id" value="<?= $obj['id'] ?>">
+                        <button name="submit">❤️</button>
+                    </form>
                     <div class="bg-white flex flex-col justify-start p-6">
-                        <a href="#" class="text-blue-700 text-sm font-bold uppercase pb-4"><?= $obj['title'] ?></a>
+                        <a href="" class="text-blue-700 text-sm font-bold uppercase pb-4"><?= $obj['title'] ?></a>
                         <a href="#" class="pb-6"><?= $obj['content'] ?></a>
                         <div class="flex flex-wrap">
                             <?php
