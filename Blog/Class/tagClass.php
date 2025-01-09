@@ -1,7 +1,7 @@
 <?php 
 
-include_once "../../Config.php";
-
+// define('ROOT_PATH', dirname(__DIR__, 2));
+include_once ROOT_PATH."/Config.php";
 class tags{
     private $conn;
     protected $tag;

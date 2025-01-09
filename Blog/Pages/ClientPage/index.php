@@ -7,8 +7,8 @@ include "../../Class/tagClass.php";
 include "../../Class/Commentaire.php";
 $themeClass = new them();
 $themes = $themeClass->showAll();
-var_dump($_POST);
-var_dump($_FILES);
+// var_dump($_POST);
+// var_dump($_FILES);
 if (isset($_POST['submit'])) {
     $title = $_POST['title'];
     $content = $_POST['content'];
@@ -169,22 +169,25 @@ $data = $article->showArticles();
                         <div class="flex flex-wrap">
                             <?php
                             $tags = json_decode($obj['tags'],true);
-                             foreach($tags as $tag):?>
+                            $unique_tags = array_unique($tags);
+                            foreach($unique_tags as $tag):?>
                                 <span class="tag bg-transparent border-2 border-sky-500 rounded-full text-blue-400 text-sm px-3 py-1 m-1"><?= $tag ?></span>
                             <?php endforeach; ?>
                         </div>
-                        <div class="flex flex-wrap">
+                        <div class="flex flex-col">
                             <?php 
                             $comments = json_decode($obj['comments'],true);
                             $unique_comments = array_unique($comments);
-                            var_dump($comments);
                             foreach($unique_comments as $comment):?>
-                                <span class="comment"><?= $comment ?></span>
+                                <span class="comment flex flex-col"><?= $comment ?></span>
                             <?php endforeach; ?>
                         </div>
-                        <a href="#" class="uppercase text-gray-800 hover:text-black">
-                            Continue Reading <i class="fas fa-arrow-right"></i>
-                        </a>
+                        <form action="../traitementPage/submit_comment.php" method="POST">
+                        <input type="hidden" name="article_id" value="<?= $obj['id'] ?>">
+                        <textarea name="comment" placeholder="Write your comment here..." required></textarea>
+                        <button name="submit" type="submit">Submit Comment</button>
+                        </form>
+                        
                     </div>
                 </article>
             <?php endforeach; ?>
