@@ -9,10 +9,11 @@ $themeClass = new them();
 $themes = $themeClass->showAll();
 // var_dump($_POST);
 // var_dump($_FILES);
-if (isset($_POST['submit'])) {
+if (isset($_POST['submitAddArticle'])) {
     $title = $_POST['title'];
     $content = $_POST['content'];
     $themeId = $_POST['themeID'];
+    $tags = isset($_POST['tags']) ?  $_POST['tags'] : [];
 
     if (isset($_FILES['image']['tmp_name']) && !empty($_FILES['image']['name'])) {
         $imagePath = './uploads/' . $_FILES['image']['name'];
@@ -24,7 +25,7 @@ if (isset($_POST['submit'])) {
     }
 
     $articleClass = new article();
-    $add = $articleClass->addArticle($content, $imagePath, $vedeoPath, $title, $themeId);
+    $add = $articleClass->addArticle($content, $imagePath, $vedeoPath, $title, $themeId,$tags);
     if ($add) {
         $_SESSION['message'] = "article added successfully";
     } else {
@@ -251,7 +252,7 @@ $data = $article->showArticles();
                         </button>
                     </div>
 
-                    <form id="articleForm" action="../traitementPage/addArticle.php" method="post" enctype="multipart/form-data" class="space-y-4" >
+                    <form id="articleForm" action="" method="post" enctype="multipart/form-data" class="space-y-4" >
                         <!-- Theme Select -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Theme</label>
@@ -287,9 +288,19 @@ $data = $article->showArticles();
                             <input type="file" name="vedeo" id="vedeo" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
 
+                        <!-- tags select -->
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1" for="tags">Tags</label>
+                            <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" name="tags[]" multiple id="tags">
+                            <?php foreach ($showTags as $tag): ?>
+                            <option value="<?= $tag['id'] ?>"><?= $tag['tag'] ?></option>
+                            <?php endforeach; ?>
+                            </select>
+                        </div>
 
                         <!-- Submit Button -->
-                        <button type="submit" name="submit" class="w-full bg-blue-800 text-white font-bold py-2 px-4 rounded hover:bg-blue-700">
+                        <button type="submit" name="submitAddArticle" class="w-full bg-blue-800 text-white font-bold py-2 px-4 rounded hover:bg-blue-700">
                             Submit Article
                         </button>
                     </form>

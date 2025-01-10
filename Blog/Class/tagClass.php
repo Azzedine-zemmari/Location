@@ -24,4 +24,10 @@ class tags{
             return false;
         }
     }
+    public function insertPostTag($articlId, $tagId) {
+        // Assuming you have a database connection $db
+        $stmt = $this->conn->prepare("INSERT INTO article_tag (articleId, tagId) VALUES (?, ?)");
+        $stmt->bindParam("ii", $articlId, $tagId);
+        $stmt->execute();
+    }
 }

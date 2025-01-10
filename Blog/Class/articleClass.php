@@ -21,15 +21,6 @@ class article{
     }
     // show article based on there theme
     public function showArticles(){
-    
-        // $offset = ($page - 1) * $itemPerPage;
-        
-        // $query =  "select count(*) as total from article";
-
-        // $countStmt = $this->conn->prepare($query);
-        // $countStmt->execute();
-        // $totalCount =$countStmt->fetch(PDO::FETCH_ASSOC);
-        // $total = $totalCount['total'];
 
     $sql = "SELECT 
     article.*,
@@ -38,37 +29,53 @@ class article{
 FROM 
     location.article AS article
 LEFT JOIN 
-    blogcommentaire
-    ON blogcommentaire.articlId = article.id
+    location.article_tag AS article_tag
+    ON article.id = article_tag.articleId
 LEFT JOIN 
-    location.tags AS tags 
-    ON tags.articlId = article.id
+    location.tags AS tags
+    ON article_tag.tagId = tags.id
+LEFT JOIN 
+    location.blogcommentaire AS blogcommentaire
+    ON blogcommentaire.articlId = article.id
 GROUP BY 
     article.id;
 ";
     $stmt = $this->conn->query($sql);
-    // $stmt->bindParam(":limit",$itemPerPage,PDO::PARAM_INT);
-    // $stmt->bindParam(":offset",$offset,PDO::PARAM_INT);
-        // return[
-        //     'result' => $stmt->fetchAll(PDO::FETCH_ASSOC),
-        //     'totalElement'=>$total,
-        //     'totalPage' => ceil($total/$itemPerPage)
-        // ];
     return $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    public function addArticle($descripition,$media,$vedeo,$title ,$themeId){
-        $sql = "insert into article(content,media,vedio,themeId,title) values(:content,:media,:vedio,:themeId,:title)";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bindParam(":content",$descripition);
-        $stmt->bindParam(":media",$media);
-        $stmt->bindParam(":vedio",$vedeo);
-        $stmt->bindParam(":themeId",$themeId);
-        $stmt->bindParam(":title",$title);
-        if($stmt->execute()){
-            return true;
+    public function addArticle($descripition,$media,$vedeo,$title ,$themeId,$tags){
+        try{
+            $this->conn->beginTransaction();
+            $sql = "insert into article(content,media,vedio,themeId,title) values(:content,:media,:vedio,:themeId,:title)";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(":content",$descripition);
+            $stmt->bindParam(":media",$media);
+            $stmt->bindParam(":vedio",$vedeo);
+            $stmt->bindParam(":themeId",$themeId);
+            $stmt->bindParam(":title",$title);
+            if($stmt->execute()){
+                $articleId = $this->conn->lastInsertId();
+                if(!empty($tags)){
+                    $sqlTAGS = "INSERT INTO article_tag(articleId,tagId) values(:article_id,:tag_id)";
+                    $STMTTags = $this->conn->prepare($sqlTAGS);
+
+                    foreach($tags as $tagId){
+                        $STMTTags->bindParam(":article_id",$articleId);
+                        $STMTTags->bindParam(":tag_id",$tagId);
+                        $STMTTags->execute();
+                    }
+                }
+                $this->conn->commit();
+                return true;
+            }
+            else{
+                $this->conn->rollBack();
+                return false;
+            }
         }
-        else{
-            return false;
+        catch(Exception $e){
+            $this->conn->rollBack();
+            throw new Exception("Error adding article and tags : ",$e->getMessage());
         }
 
     }

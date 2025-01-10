@@ -35,4 +35,13 @@ class them{
             echo 'Errror in theme show';
         }
     }
+    public function delete($id){
+        $sql = "select * from theme where id = :id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(":id",$id);
+        if($stmt->execute()){
+            return true;
+        }
+
+    }
 }
