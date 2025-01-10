@@ -251,7 +251,7 @@ $data = $article->showArticles();
                         </button>
                     </div>
 
-                    <form id="articleForm" method="post" enctype="multipart/form-data" class="space-y-4">
+                    <form id="articleForm" action="../traitementPage/addArticle.php" method="post" enctype="multipart/form-data" class="space-y-4" >
                         <!-- Theme Select -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Theme</label>
