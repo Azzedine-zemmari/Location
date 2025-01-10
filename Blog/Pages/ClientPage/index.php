@@ -172,26 +172,26 @@ $data = $article->showArticles();
                         <a href="#" class="pb-6"><?= $obj['content'] ?></a>
                         <div class="flex flex-wrap">
                             <?php
-                            $tags = json_decode($obj['tags'],true);
+                            $tags = json_decode($obj['tags'], true);
                             $unique_tags = array_unique($tags);
-                            foreach($unique_tags as $tag):?>
+                            foreach ($unique_tags as $tag): ?>
                                 <span class="tag bg-transparent border-2 border-sky-500 rounded-full text-blue-400 text-sm px-3 py-1 m-1"><?= $tag ?></span>
                             <?php endforeach; ?>
                         </div>
                         <div class="flex flex-col">
-                            <?php 
-                            $comments = json_decode($obj['comments'],true);
+                            <?php
+                            $comments = json_decode($obj['comments'], true);
                             $unique_comments = array_unique($comments);
-                            foreach($unique_comments as $comment):?>
+                            foreach ($unique_comments as $comment): ?>
                                 <span class="comment flex flex-col"><?= $comment ?></span>
                             <?php endforeach; ?>
                         </div>
                         <form action="../traitementPage/submit_comment.php" method="POST">
-                        <input type="hidden" name="article_id" value="<?= $obj['id'] ?>">
-                        <textarea name="comment" placeholder="Write your comment here..." required></textarea>
-                        <button name="submit" type="submit">Submit Comment</button>
+                            <input type="hidden" name="article_id" value="<?= $obj['id'] ?>">
+                            <textarea name="comment" placeholder="Write your comment here..." required></textarea>
+                            <button name="submit" type="submit">Submit Comment</button>
                         </form>
-                        
+
                     </div>
                 </article>
             <?php endforeach; ?>
@@ -301,16 +301,108 @@ $data = $article->showArticles();
 
 
     <script>
-        // let posts = document.getElementById("POSTS");
-        // document.addEventListener("DOMContentLoaded",function(){
-        //     let buttons = document.querySelectorAll("#themes button");
-        //     buttons.forEach(button => {
-        //         button.addEventListener('click',function(){
-        //             const buttonValue = this.value;
-        //             console.log("value is",buttonValue);
-        //         })
-        //     });
-        // })
+        let posts = document.getElementById("POSTS");
+        let buttons = document.querySelectorAll("#themes button");
+
+        buttons.forEach((button) => {
+            button.addEventListener("click", function() {
+                const buttonValue = this.value;
+                console.log("Button value is:", buttonValue);
+
+                // Clear the posts area
+                posts.innerHTML = "";
+
+                // Send fetch request
+                fetch("../../AjaxFiles/FilterByTheme.php", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded",
+                        },
+                        body: `theme=${buttonValue}`,
+                    })
+                    .then((response) => {
+                        return response.json();
+                    })
+                    .then((articles) => {
+                        console.log("Themes fetched:", articles);
+
+                        if (articles.length === 0) {
+                            posts.innerHTML = "<p>No articles found for this theme.</p>";
+                            return;
+                        }
+
+                        let htmlContent = "";
+                        articles.forEach((article) => {
+                            htmlContent += `
+                            <article class="flex flex-col shadow my-4">
+                                <a href="#" class="hover:opacity-75">
+                                    <img src="${article.media}" alt="Theme Image">
+                                </a>
+                                <div class="bg-white flex flex-col justify-start p-6">
+                                    <a href="#" class="text-blue-700 text-sm font-bold uppercase pb-4">${article.title}</a>
+                                    <a href="#" class="pb-6">${article.content}</a>
+                                    <a href="#" class="uppercase text-gray-800 hover:text-black">
+                                        Continue Reading <i class="fas fa-arrow-right"></i>
+                                    </a>
+                                </div>
+                            </article>
+                        `;
+                        });
+
+                        posts.innerHTML = htmlContent; // Set HTML content once
+                    })
+                    .catch((error) => {
+                        console.error("Error fetching articles:", error);
+                        posts.innerHTML = "<p>An error occurred while fetching articles. Please try again later.</p>";
+                    });
+            });
+        });
+        document.getElementById("searchInput").addEventListener("keydown", (event) => {
+            if (event.key == "Enter") {
+                event.preventDefault();
+                const title = event.target.value.trim();
+                console.log("title", title)
+                fetch("../../AjaxFiles/SearchArticle.php", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded",
+                        },
+                        body: `title=${title}`,
+                    })
+                    .then((response) =>response.json())
+                    .then((articles) => {
+                        // if (articles.length === 0) {
+                        //     posts.innerHTML = "<p>No articles found for this theme.</p>";
+                        //     return;
+                        // }
+
+                        console.log("Themes fetched:", articles);
+                        let htmlContent = "";
+                        articles.forEach((article) => {
+                            htmlContent += `
+            <article class="flex flex-col shadow my-4">
+                <a href="#" class="hover:opacity-75">
+                    <img src="${article.media}" alt="Theme Image">
+                </a>
+                <div class="bg-white flex flex-col justify-start p-6">
+                    <a href="#" class="text-blue-700 text-sm font-bold uppercase pb-4">${article.title}</a>
+                    <a href="#" class="pb-6">${article.content}</a>
+                    <a href="#" class="uppercase text-gray-800 hover:text-black">
+                        Continue Reading <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </article>
+        `;
+                        });
+                        posts.innerHTML = htmlContent;
+
+                    })
+                    .catch((error) => {
+                        console.error("Error in fetch:", error);
+                    });
+            }
+        })
+
         // let currentPage = 1;
         // let totalPages = 1;
         // let currentTheme = ''; 

@@ -1,11 +1,11 @@
-<?php
+<?php 
 
 require_once "../Class/articleClass.php";
-if (isset($_POST['title'])) {
-    $title = $_POST['title'];
+if(isset($_POST['theme'])){
+    $theme = $_POST['theme'];
+    
     $class = new article();
-
-    $result = $class->search($title);
+    $result = $class->filterByTheme($theme);
 
     if($result){
         echo json_encode($result);

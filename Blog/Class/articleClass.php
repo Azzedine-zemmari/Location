@@ -132,4 +132,21 @@ GROUP BY
             return false;
         }
     }
+
+    // work on filter by theme
+    public function filterByTheme($theme){
+        $sql = "select * from article where themeId = :themeId";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->bindParam(":themeId",$theme);
+
+        if($stmt->execute()){
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        }
+        else{
+            return false;
+        }
+    }
 }
