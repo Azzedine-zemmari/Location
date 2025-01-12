@@ -64,5 +64,31 @@ class commentaire{
             echo "this is shit isnot working";
         }
     }
+    public function deleteComment($id){
+        $sql = "delete from blogcommentaire where id = :id";
 
+        $stmt = $this->conn->prepare($sql);
+        
+        $stmt->bindParam(":id",$id);
+
+        if($stmt->execute()){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    // admin
+    public function getAllComments(){
+        $sql = "select article.title , client.nom, blogcommentaire.comment,blogcommentaire.id from location.blogcommentaire join article on article.id = blogcommentaire.articlId join client on client.id = blogcommentaire.userId;";
+        $stmt = $this->conn->prepare($sql);
+
+        if($stmt->execute()){
+            return $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+        else{
+            echo "error";
+        }
+        
+    }
 }

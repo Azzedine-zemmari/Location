@@ -1,6 +1,6 @@
 <?php 
 
-// define('ROOT_PATH', dirname(__DIR__, 2));
+define('ROOT_PATH', dirname(__DIR__, 2));
 include_once ROOT_PATH."/Config.php";
 class tags{
     private $conn;
@@ -24,10 +24,33 @@ class tags{
             return false;
         }
     }
-    public function insertPostTag($articlId, $tagId) {
-        // Assuming you have a database connection $db
-        $stmt = $this->conn->prepare("INSERT INTO article_tag (articleId, tagId) VALUES (?, ?)");
-        $stmt->bindParam("ii", $articlId, $tagId);
-        $stmt->execute();
+    // public function insertPostTag($articlId, $tagId) {
+    //     // Assuming you have a database connection $db
+    //     $stmt = $this->conn->prepare("INSERT INTO article_tag (articleId, tagId) VALUES (?, ?)");
+    //     $stmt->bindParam("ii", $articlId, $tagId);
+    //     $stmt->execute();
+    // }
+    public function insertTags($tagsArray)
+    {
+        try {
+            // Start a transaction to ensure atomicity
+            $this->conn->beginTransaction();
+            
+            foreach ($tagsArray as $tag) {
+                // Prepare SQL query to insert the tag into the database
+                $sql = "INSERT INTO tags (tag) VALUES (:name)";
+                $stmt = $this->conn->prepare($sql);
+                $stmt->bindParam(":name", $tag);
+                $stmt->execute();
+            }
+
+            // If all inserts are successful, commit the transaction
+            $this->conn->commit();
+            echo "Tags inserted successfully!";
+        } catch (Exception $e) {
+            // If an error occurs, roll back all operations
+            $this->conn->rollBack();
+            echo "Failed to insert tags: " . $e->getMessage();
+        }
     }
 }

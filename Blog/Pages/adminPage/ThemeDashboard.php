@@ -276,10 +276,6 @@ $articles = $article->ShowallArticles();
                     </div>
                 </div>
                 <div class="card-header py-3 d-flex justify-content-between">
-                        <!-- <h6 class="m-0 font-weight-bold text-primary"></h6>
-                        <a href="./modalAddTheme.php"><button type="button" name="addTheme" id="addTheme" class="btn btn-success btn-sm" >
-                            <i class="bi bi-plus-circle"></i>
-                        </button></a> -->
                     </div>
                     <div class="card-body">
 
@@ -314,112 +310,7 @@ $articles = $article->ShowallArticles();
                         </div>
                     </div>
                 </div>
-
-<!-- 
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3 d-flex justify-content-between">
-                        <h6 class="m-0 font-weight-bold text-primary">Add New Cars</h6>
-                        <button type="button" class="btn btn-success btn-sm" >
-                            <i class="bi bi-plus-circle"></i> Add Another Car
-                        </button>
-                    </div>
-                    <div class="card-body">
-                        <form method="POST" enctype="multipart/form-data" id="multipleCarForm">
-                            <input type="hidden" name="action" value="add_multiple_cars">
-                            <div id="carFormsContainer">
-                                <div class="car-form mb-4 border-bottom pb-4">
-                                    <div class="row">
-                                        <div class="col-md-3 mb-3">
-                                            <label class="form-label">Brand</label>
-                                            <input type="text" class="form-control" name="cars[0][marque]" required>
-                                        </div>
-                                        <div class="col-md-3 mb-3">
-                                            <label class="form-label">Model</label>
-                                            <input type="text" class="form-control" name="cars[0][modele]" required>
-                                        </div>
-                                        <div class="col-md-2 mb-3">
-                                            <label class="form-label">Year</label>
-                                            <input type="number" class="form-control" name="cars[0][annee]" required>
-                                        </div>
-                                        <div class="col-md-2 mb-3">
-                                            <label class="form-label">Category</label>
-                                            <select class="form-control" name="cars[0][categorie_id]" required>
-                                                <option value="">Select category</option>
-                                               
-                                            </select>
-                                        </div>
-                                        <div class="col-md-2 mb-3">
-                                            <label class="form-label">Price</label>
-                                            <input type="number" class="form-control" name="cars[0][price]" required>
-                                        </div>
-                                        <div class="col-md-4 mb-3">
-                                            <label class="form-label">Car Image</label>
-                                            <input type="file" class="form-control" name="cars[0][image]" accept="image/*" required>
-                                        </div>
-                                    </div>
-                                    <button type="button" class="btn btn-danger btn-sm" onclick="removeCarForm(this)" style="display: none;">
-                                        <i class="bi bi-trash"></i> Remove Car
-                                    </button>
-                                </div>
-                            </div>
-                            <button type="submit" class="btn btn-primary mt-3">Add Cars</button>
-                        </form>
-                    </div>
-                </div> -->
             </main>
-        </div>
-    </div>
-    <div class="card shadow mb-4">
-        <div class="card-header py-3 d-flex justify-content-between align-items-center">
-            <h6 class="m-0 font-weight-bold text-primary">Category Management</h6>
-            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
-                <i class="bi bi-plus-circle"></i> Add New Category
-            </button>
-        </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered" width="100%" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <!-- Add Category Modal -->
-    <div class="modal fade" id="addCategoryModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Add New Category</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <form method="POST">
-                    <div class="modal-body">
-                        <input type="hidden" name="action" value="add_category">
-                        <div class="mb-3">
-                            <label for="categoryName" class="form-label">Category Name</label>
-                            <input type="text" class="form-control" id="categoryName" name="nom" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="categoryDescription" class="form-label">Description</label>
-                            <textarea class="form-control" id="categoryDescription" name="description" rows="3" required></textarea>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Add Category</button>
-                    </div>
-                </form>
-            </div>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

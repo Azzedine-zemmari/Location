@@ -160,6 +160,7 @@ $data = $article->showArticles();
         <section id="POSTS" class="w-full md:w-2/3 flex flex-col items-center px-3">
             <?php
             foreach ($data as $obj): ?>
+            <?php if($obj['status']=='ok'):?>
                 <article class="flex flex-col shadow my-4">
                     <a href="#" class="hover:opacity-75">
                         <img src="<?= $obj['media'] ?>" alt="Theme Image">
@@ -195,6 +196,7 @@ $data = $article->showArticles();
 
                     </div>
                 </article>
+            <?php endif;?>
             <?php endforeach; ?>
 
             <!-- Pagination -->
