@@ -53,4 +53,19 @@ class tags{
             echo "Failed to insert tags: " . $e->getMessage();
         }
     }
+    public function deleteTag($id){
+        $sql = "delete from tags where id = :id";
+
+        $stmt = $this->conn->prepare($sql);
+        
+        $stmt->bindParam(":id",$id);
+
+        if($stmt->execute()){
+            return true;
+        }
+        else{
+            return false;
+        }
+
+    }
 }
