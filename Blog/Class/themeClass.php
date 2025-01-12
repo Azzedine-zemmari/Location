@@ -17,12 +17,11 @@ class them{
         $sql = 'insert into theme(name) values(:name)';
         $stmt = $this->conn->prepare($sql);
         $stmt->bindParam(":name",$this->themenom);
-        if($stmt->execute()){
-            echo "Success";
-        }
-        else{
-            echo "Error";
-        }
+    if ($stmt->execute()) {
+        return "Theme added successfully!";
+    } else {
+        return "Error adding theme!";
+    }
     }
     public function showAll(){
         $sql = 'select * from theme';
@@ -36,7 +35,7 @@ class them{
         }
     }
     public function delete($id){
-        $sql = "select * from theme where id = :id";
+        $sql = "delete from theme where id = :id";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindParam(":id",$id);
         if($stmt->execute()){

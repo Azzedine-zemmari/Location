@@ -41,7 +41,7 @@ if(isset($_POST['submit'])){
     }
 
     $class = new article();
-    $insert = $class->addArticle($content,$imagePath,$videoPath,$title,$theme);
+    // $insert = $class->addArticle($content,$imagePath,$videoPath,$title,$theme);
     if($insert){
         header("Location: ../ClientPage/index.php");
     }

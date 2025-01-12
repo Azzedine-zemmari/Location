@@ -156,4 +156,41 @@ GROUP BY
             return false;
         }
     }
+    // admin 
+    public function ShowallArticles(){
+        $sql = "select article.*,theme.name as themeName from location.article join theme on theme.id = article.themeId";
+        $stmt = $this->conn->prepare($sql);
+
+        if($stmt->execute()){
+            return $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+        else{
+            return null;
+        }
+        
+    }
+    public function approve($id){
+        $sql = "update article set status = 'ok' where id = :id";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(":id",$id);
+        if($stmt->execute()){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    public function deny($id){
+        $sql = "update article set status = 'no' where id = :id";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(":id",$id);
+        if($stmt->execute()){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 }

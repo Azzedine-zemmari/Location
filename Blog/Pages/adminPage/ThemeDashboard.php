@@ -5,8 +5,12 @@ if (!isset($_SESSION['userId']) || ($_SESSION['role'] !== 'admin')) {
     exit();
 }
 require "../../Class/themeClass.php";
+require "../../Class/articleClass.php";
 $theme = new them();
 $themes = $theme->showAll();
+
+$article = new article();
+$articles = $article->ShowallArticles();
 
 
 ?>
@@ -42,29 +46,27 @@ $themes = $theme->showAll();
             transform: translateY(-5px);
         }
             /* Modal background */
-            .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
+            #modalOverlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1050; /* Add this */
+}
 
-        /* Modal content */
-        .modal {
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            width: 300px;
-            max-width: 90%;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
+.modal {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    position: relative; /* Add this */
+    width: 400px; /* Add this */
+    max-width: 90%; /* Add this */
+}
 
         /* Close button */
         .close-btn {
@@ -238,24 +240,14 @@ $themes = $theme->showAll();
                         </div>
                     </div>
                 </div>
-                 <!-- Modal structure -->
-    <div class="modal-overlay" id="modalOverlay">
-        <div class="modal">
-            <form method="post">
-                <label for="theme">Theme</label>
-                <input type="text" name="theme" id="theme" required>
-                <button name="addTheme">Add</button>
-                <button type="button" class="close-btn" id="closeModal">Close</button>
-            </form>
-        </div>
-    </div>
+                 
                 <!-- Users Table -->
                 <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex justify-content-between">
                         <h6 class="m-0 font-weight-bold text-primary"></h6>
-                        <button type="button" name="addTheme" id="addTheme" class="btn btn-success btn-sm" >
+                        <a href="./modalAddTheme.php"><button type="button" name="addTheme" id="addTheme" class="btn btn-success btn-sm" >
                             <i class="bi bi-plus-circle"></i> Add Another theme
-                        </button>
+                        </button></a>
                     </div>
                     <div class="card-body">
 
@@ -274,7 +266,46 @@ $themes = $theme->showAll();
                                             <td><?= $theme['id']?></td>
                                             <td><?= $theme['name']?></td>
                                             <td>
-                                                <a class="text-red-400" href="../traitementPage/deleteTheme?theme=<?=$theme['id'] ?>">delete</a>
+                                            <a class="text-red-400" href="../traitementPage/deleteTheme.php?theme=<?= $theme['id'] ?>">delete</a>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach;?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-header py-3 d-flex justify-content-between">
+                        <!-- <h6 class="m-0 font-weight-bold text-primary"></h6>
+                        <a href="./modalAddTheme.php"><button type="button" name="addTheme" id="addTheme" class="btn btn-success btn-sm" >
+                            <i class="bi bi-plus-circle"></i>
+                        </button></a> -->
+                    </div>
+                    <div class="card-body">
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>id</th>
+                                        <th>title</th>
+                                        <th>content</th>
+                                        <th>theme</th>
+                                        <th>status</th>
+                                        <th>action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach($articles as $article): ?>
+                                        <tr>
+                                            <td><?= $article['id']?></td>
+                                            <td><?= $article['title']?></td>
+                                            <td><?= $article['content']?></td>
+                                            <td><?= $article['themeName']?></td>
+                                            <td><?= $article['status']?></td>
+                                            <td>
+                                            <a class="text-red-400" href="../traitementPage/aproveArticle.php?id=<?= $article['id'] ?>">approve</a>
+                                            <a class="text-red-400" href="../traitementPage/denyArticle.php?id=<?= $article['id'] ?>">deny</a>
                                             </td>
                                         </tr>
                                     <?php endforeach;?>
@@ -284,7 +315,7 @@ $themes = $theme->showAll();
                     </div>
                 </div>
 
-
+<!-- 
                 <div class="card shadow mb-4">
                     <div class="card-header py-3 d-flex justify-content-between">
                         <h6 class="m-0 font-weight-bold text-primary">Add New Cars</h6>
@@ -334,7 +365,7 @@ $themes = $theme->showAll();
                             <button type="submit" class="btn btn-primary mt-3">Add Cars</button>
                         </form>
                     </div>
-                </div>
+                </div> -->
             </main>
         </div>
     </div>
@@ -391,27 +422,6 @@ $themes = $theme->showAll();
             </div>
         </div>
     </div>
-    <script>
-    // Get references to the modal elements
-    const addThemeBtn = document.getElementById("addTheme");
-    const modalOverlay = document.getElementById("modalOverlay");
-    const closeModalBtn = document.getElementById("closeModal");
-
-    addThemeBtn.addEventListener("click", function() {
-        modalOverlay.style.display = "flex"; // Show the modal overlay
-    });
-
-    closeModalBtn.addEventListener("click", function() {
-        modalOverlay.style.display = "none"; // Hide the modal overlay
-    });
-
-    modalOverlay.addEventListener("click", function(event) {
-        if (event.target === modalOverlay) {
-            modalOverlay.style.display = "none"; // Hide the modal overlay
-        }
-    });
-</script>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
