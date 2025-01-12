@@ -100,54 +100,34 @@ $all = $class->getAllComments();
     <div class="container-fluid">
         <div class="row">
 
-            <nav class="col-md-2 d-none d-md-block sidebar">
+        <nav class="col-md-2 d-none d-md-block sidebar">
                 <div class="position-sticky">
                     <div class="text-center mb-4">
                         <h4 class="text-white">Admin Panel</h4>
                     </div>
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link active" href="#dashboard">
+                            <a class="nav-link active" href="./ThemeDashboard.php">
                                 <i class="bi bi-speedometer2"></i> Dashboard
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#users">
-                                <i class="bi bi-people"></i> Users
+                            <a class="nav-link" href="#">
+                                <i class="bi bi-people"></i> comment
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="manage_car.php">
-                                <i class="bi bi-car-front"></i> Cars
+                            <a class="nav-link" href="./tags.php">
+                                <i class="bi bi-car-front"></i> tags
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="view_reservation.php">
-                                <i class="bi bi-calendar-check"></i> Reservations
+                            <a class="nav-link" href="../../../client/ClientLogic/logoutUser.php">
+                                logout
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="gestionArticle.php">
-                                <i class="bi bi-calendar-check"></i> gerer les articles
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="theme_article.php">
-                                <i class="bi bi-calendar-check"></i> gerer les theme
-                            </a>
-                        </li>
-                        
-                    </ul>
-                    <div class="absolute bottom-0 start-0 w-100 p-3">
-                        <form action="../controller/logout.php" method="POST">
-                            <button type="submit" class="btn btn-danger w-100">
-                                <i class="bi bi-box-arrow-right"></i> Logout
-                            </button>
-                        </form>
-                    </div>
                 </div>
             </nav>
-
 
             <main class="col-md-10 ms-sm-auto px-4">
                 <div class="card-header py-3 d-flex justify-content-between">

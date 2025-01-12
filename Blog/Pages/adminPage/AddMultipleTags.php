@@ -51,7 +51,7 @@ if (isset($_POST['submit'])) {
                 <input type="text" class="form-control" name="tags" id="tags" placeholder="Enter theme name" required>
             </div>
             <div class="mb-3 text-end">
-                <button type="submit" name="submit" class="btn btn-primary">Add Theme</button>
+                <button type="submit" name="submit" class="btn btn-primary">Add tags</button>
                 <button type="reset" class="btn btn-secondary">Clear</button>
             </div>
         </form>
