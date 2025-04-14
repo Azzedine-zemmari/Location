@@ -34,8 +34,6 @@ Your mission is to develop this module using **PHP OOP** and **SQL**.
 
 8. 🏦 **Pagination for Vehicle Listings:**
    - As a client, I can view available vehicles with pagination.
-     - **Version 🚙:** Pagination implemented using PHP (preferred).
-     - **Version 🚙🚙:** Use DataTable for interactive and dynamic pagination.
 
 9. 🚙 **Edit/Delete Reviews:**
    - As a client, I can modify or delete my own reviews (soft delete).
