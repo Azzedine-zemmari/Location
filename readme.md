@@ -47,8 +47,3 @@ Your mission is to develop this module using **PHP OOP** and **SQL**.
    - As an administrator, I can manage reservations, vehicles, reviews, and categories with statistics (Admin Dashboard).
 
 ---
-
-## Extra Features
-
-1. **SQL View for Vehicle List:**
-   - As a backend developer, I will create an SQL view called `ListeVehicules` that combines the necessary information to display the vehicle list, including category details, associated reviews, and availability.
